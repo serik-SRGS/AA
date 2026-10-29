@@ -3,86 +3,142 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GEOFIT - Búsqueda de Comida</title>
+    <title>GEOFIT - Encuentra opciones de comida</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
-    <style>
-        body { font-family: Arial, sans-serif; margin: 20px; }
-        #map { height: 350px; width: 100%; border-radius: 8px; margin-top: 15px; }
-        .card { border: 1px solid #ddd; padding: 12px; margin-bottom: 10px; border-radius: 6px; background-color: #f9f9f9; }
-        .controls { display: flex; gap: 10px; align-items: center; margin-bottom: 15px; }
-    </style>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
+<body class="bg-gray-50 text-gray-800 font-sans min-h-screen">
 
-    <h2>GEOFIT: Encuentra opciones de comida cerca de la USM</h2>
-    
-    <div class="controls">
-        <label for="presupuesto">Presupuesto máximo ($):</label>
-        <input type="number" id="presupuesto" value="5000" step="500">
-        <button onclick="buscarLocalizaciones()">Buscar</button>
-    </div>
+    <header class="bg-white border-b border-gray-200 px-6 py-4 flex justify-between items-center shadow-sm">
+        <h1 class="text-2xl font-bold text-gray-900 tracking-tight">GEOFIT</h1>
+        <nav class="space-x-4 text-sm font-medium text-gray-600">
+            <a href="#" class="hover:text-black">Inicio</a>
+            <a href="#" class="text-black font-semibold">Buscar</a>
+            <a href="#" class="hover:text-black">Sobre nosotros</a>
+        </nav>
+    </header>
 
-    <div id="map"></div>
+    <main class="max-w-7xl mx-auto px-4 py-6 grid grid-cols-1 md:grid-cols-12 gap-6">
+        
+        <section class="md:col-span-5 lg:col-span-4 bg-white p-6 rounded-xl border border-gray-200 shadow-sm space-y-6">
+            <div>
+                <h2 class="text-xl font-bold text-gray-900">Busca alternativas</h2>
+                <p class="text-sm text-gray-500 mt-1">Filtra por presupuesto, dieta y alérgenos en San Joaquín.</p>
+            </div>
 
-    <h3>Opciones encontradas</h3>
-    <div id="lista-resultados"></div>
+            <div>
+                <label for="presupuesto" class="block text-sm font-semibold text-gray-700">Presupuesto máximo</label>
+                <div class="mt-2 flex items-center gap-2">
+                    <span class="text-gray-500">$</span>
+                    <input type="number" id="presupuesto" value="5000" step="500" class="w-full border border-gray-300 rounded-lg p-2 text-sm focus:ring-2 focus:ring-black focus:outline-none">
+                </div>
+            </div>
+
+            <div>
+                <label class="block text-sm font-semibold text-gray-700 mb-2">Tipo de alimentación</label>
+                <select id="tipo_alimentacion" class="w-full border border-gray-300 rounded-lg p-2 text-sm focus:ring-2 focus:ring-black focus:outline-none bg-white">
+                    <option value="">Todos los tipos</option>
+                    <option value="1">Vegano</option>
+                    <option value="2">Vegetariano</option>
+                    <option value="3">Sin Gluten</option>
+                </select>
+            </div>
+
+            <div>
+                <label class="block text-sm font-semibold text-gray-700 mb-2">Excluir Alérgeno</label>
+                <select id="alergeno" class="w-full border border-gray-300 rounded-lg p-2 text-sm focus:ring-2 focus:ring-black focus:outline-none bg-white">
+                    <option value="">Ninguno</option>
+                    <option value="mani">Maní</option>
+                    <option value="lactosa">Lactosa</option>
+                    <option value="gluten">Gluten</option>
+                </select>
+            </div>
+
+            <button onclick="buscarLocalizaciones()" class="w-full bg-black text-white font-semibold py-2.5 rounded-lg hover:bg-gray-800 transition">
+                Buscar alternativas reales
+            </button>
+
+            <div class="border-t border-gray-100 pt-4">
+                <h3 class="text-md font-bold text-gray-900 mb-3" id="contador-resultados">Cargando locales...</h3>
+                <div id="lista-resultados" class="space-y-3 max-h-80 overflow-y-auto pr-1"></div>
+            </div>
+        </section>
+
+        <section class="md:col-span-7 lg:col-span-8 bg-white p-4 rounded-xl border border-gray-200 shadow-sm flex flex-col">
+            <h2 class="text-lg font-bold text-gray-900 mb-3">Mapa en vivo - San Joaquín</h2>
+            <div id="map" class="w-full h-[550px] rounded-lg border border-gray-200 z-0"></div>
+        </section>
+
+    </main>
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
-        // Inicializar mapa centrado en la USM San Joaquín por defecto
         let map = L.map('map').setView([-33.4883, -70.6151], 15);
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '© OpenStreetMap'
+
+        L.tileLayer('https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '&copy; OpenStreetMap'
         }).addTo(map);
+
+        L.marker([-33.4883, -70.6151]).addTo(map).bindPopup("<b>USM Campus San Joaquín</b>").openPopup();
 
         let marcadores = [];
 
-        // Obtener la ubicación real del usuario desde el navegador o tablet
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(position => {
-                let userLat = position.coords.latitude;
-                let userLng = position.coords.longitude;
-                L.marker([userLat, userLng]).addTo(map).bindPopup("<b>Tu posición actual</b>").openPopup();
-                map.setView([userLat, userLng], 16);
-            });
-        }
-
         async function buscarLocalizaciones() {
             let presupuesto = document.getElementById('presupuesto').value;
-            let response = await fetch(`/api/buscar/?presupuesto=${presupuesto}`);
-            let data = await response.json();
+            let tipo = document.getElementById('tipo_alimentacion').value;
+            let alergeno = document.getElementById('alergeno').value;
 
-            // Limpiar marcadores viejos del mapa
-            marcadores.forEach(m => map.removeLayer(m));
-            marcadores = [];
+            let url = `/api/buscar/?presupuesto=${presupuesto}`;
+            if (tipo) url += `&tipo=${tipo}`;
+            if (alergeno) url += `&alergeno=${alergeno}`;
 
-            let listaHTML = '';
+            try {
+                let response = await fetch(url);
+                let data = await response.json();
 
-            data.resultados.forEach(item => {
-                // Agregar pin al mapa
-                let marker = L.marker([item.latitud, item.longitud]).addTo(map)
-                    .bindPopup(`<b>${item.lugar}</b><br>${item.plato} - $${item.precio}`);
-                marcadores.push(marker);
+                marcadores.forEach(m => map.removeLayer(m));
+                marcadores = [];
 
-                let nutInfo = item.info_nutricional 
-                    ? `<small><strong>Nutrición:</strong> Calorías: ${item.info_nutricional.calorias} kcal | Proteínas: ${item.info_nutricional.proteinas}g</small>`
-                    : `<small>Sin datos nutricionales específicos</small>`;
+                let listaHTML = '';
+                document.getElementById('contador-resultados').innerText = `Se encontraron ${data.resultados.length} locales reales`;
 
-                listaHTML += `
-                    <div class="card">
-                        <h4>${item.lugar} — ${item.plato} ($${item.precio})</h4>
-                        <p><strong>Dirección:</strong> ${item.direccion}</p>
-                        <p><strong>Tipo:</strong> ${item.tipo_alimentacion}</p>
-                        <p>${nutInfo}</p>
-                    </div>
-                `;
-            });
+                if (data.resultados.length === 0) {
+                    document.getElementById('lista-resultados').innerHTML = '<p class="text-sm text-gray-500">No se encontraron locales para este filtro.</p>';
+                    return;
+                }
 
-            document.getElementById('lista-resultados').innerHTML = listaHTML;
+                data.resultados.forEach(item => {
+                    let marker = L.marker([item.latitud, item.longitud]).addTo(map)
+                        .bindPopup(`<b>${item.lugar}</b><br>${item.plato} - $${item.precio}`);
+                    marcadores.push(marker);
+
+                    let nutInfo = item.info_nutricional 
+                        ? `<p class="text-xs text-gray-500 mt-1">Calorías: ${item.info_nutricional.calorias} kcal | Prot: ${item.info_nutricional.proteinas}g</p>`
+                        : '';
+
+                    listaHTML += `
+                        <div class="border border-gray-200 rounded-lg p-3 hover:border-black transition bg-gray-50">
+                            <div class="flex justify-between items-start">
+                                <h4 class="font-bold text-sm text-gray-900">${item.lugar}</h4>
+                                <span class="text-xs font-semibold bg-gray-200 text-gray-800 px-2 py-0.5 rounded">$${item.precio}</span>
+                            </div>
+                            <p class="text-xs font-medium text-gray-700 mt-1">${item.plato}</p>
+                            <span class="inline-block mt-2 text-[10px] font-medium bg-green-100 text-green-800 px-2 py-0.5 rounded-full">${item.tipo_alimentacion}</span>
+                            ${nutInfo}
+                        </div>
+                    `;
+                });
+
+                document.getElementById('lista-resultados').innerHTML = listaHTML;
+
+            } catch (error) {
+                console.error("Error cargando alternativas:", error);
+            }
         }
 
-        // Ejecutar primera búsqueda automática al cargar
         buscarLocalizaciones();
     </script>
 </body>
 </html>
+EOF
