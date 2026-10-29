@@ -1,95 +1,228 @@
-cat << 'EOF' > mi_proyecto/templates/index.html
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GEOFIT - Encuentra opciones de comida</title>
+    <title>GEOFIT - Alimentación Saludable USM</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0fdf4',
+                            100: '#dcfce7',
+                            500: '#22c55e',
+                            600: '#16a34a',
+                            700: '#15803d',
+                            900: '#14532d',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
 </head>
-<body class="bg-gray-50 text-gray-800 font-sans min-h-screen">
+<body class="bg-slate-50 text-slate-800 font-sans min-h-screen flex flex-col">
 
-    <header class="bg-white border-b border-gray-200 px-6 py-4 flex justify-between items-center shadow-sm">
-        <h1 class="text-2xl font-bold text-gray-900 tracking-tight">GEOFIT</h1>
-        <nav class="space-x-4 text-sm font-medium text-gray-600">
-            <a href="#" class="hover:text-black">Inicio</a>
-            <a href="#" class="text-black font-semibold">Buscar</a>
-            <a href="#" class="hover:text-black">Sobre nosotros</a>
-        </nav>
-    </header>
-
-    <main class="max-w-7xl mx-auto px-4 py-6 grid grid-cols-1 md:grid-cols-12 gap-6">
-        
-        <section class="md:col-span-5 lg:col-span-4 bg-white p-6 rounded-xl border border-gray-200 shadow-sm space-y-6">
-            <div>
-                <h2 class="text-xl font-bold text-gray-900">Busca alternativas</h2>
-                <p class="text-sm text-gray-500 mt-1">Filtra por presupuesto, dieta y alérgenos cerca de la USM.</p>
-            </div>
-
-            <div>
-                <label for="presupuesto" class="block text-sm font-semibold text-gray-700">Presupuesto máximo</label>
-                <div class="mt-2 flex items-center gap-2">
-                    <span class="text-gray-500">$</span>
-                    <input type="number" id="presupuesto" value="5000" step="500" class="w-full border border-gray-300 rounded-lg p-2 text-sm focus:ring-2 focus:ring-black focus:outline-none">
+    <header class="bg-white border-b border-slate-200 sticky top-0 z-50 shadow-sm">
+        <div class="max-w-7xl mx-auto px-6 py-3.5 flex justify-between items-center">
+            <div class="flex items-center gap-2 cursor-pointer" onclick="mostrarSeccion('buscar')">
+                <div class="bg-emerald-600 text-white font-black text-xl w-10 h-10 rounded-xl flex items-center justify-center shadow-md shadow-emerald-200">
+                    G
+                </div>
+                <div>
+                    <span class="text-2xl font-black tracking-tight text-slate-900">GEO<span class="text-emerald-600">FIT</span></span>
+                    <span class="block text-[10px] font-bold uppercase tracking-widest text-emerald-700 -mt-1">USM San Joaquín</span>
                 </div>
             </div>
+            
+            <nav class="flex items-center gap-2">
+                <button id="btn-nav-buscar" onclick="mostrarSeccion('buscar')" class="px-4 py-2 rounded-lg text-sm font-bold transition bg-emerald-50 text-emerald-700">
+                    🔍 Buscar
+                </button>
+                <button id="btn-nav-nosotros" onclick="mostrarSeccion('nosotros')" class="px-4 py-2 rounded-lg text-sm font-semibold text-slate-600 hover:text-emerald-600 hover:bg-slate-100 transition">
+                    👥 Sobre Nosotros
+                </button>
+            </nav>
+        </div>
+    </header>
 
-            <div>
-                <label class="block text-sm font-semibold text-gray-700 mb-2">Tipo de alimentación</label>
-                <select id="tipo_alimentacion" class="w-full border border-gray-300 rounded-lg p-2 text-sm focus:ring-2 focus:ring-black focus:outline-none bg-white">
-                    <option value="">Todos los tipos</option>
-                    <option value="1">Vegano</option>
-                    <option value="2">Vegetariano</option>
-                    <option value="3">Sin Gluten</option>
-                </select>
+    <main id="seccion-buscar" class="max-w-7xl mx-auto px-4 py-6 grid grid-cols-1 md:grid-cols-12 gap-6 flex-grow w-full">
+        
+        <section class="md:col-span-5 lg:col-span-4 bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm space-y-5 flex flex-col justify-between">
+            <div class="space-y-5">
+                <div class="border-b border-slate-100 pb-3">
+                    <h2 class="text-xl font-bold text-slate-900">Encuentra tu opción</h2>
+                    <p class="text-xs text-slate-500 mt-1">Opciones saludables y económicas cerca del campus San Joaquín.</p>
+                </div>
+
+                <div>
+                    <div class="flex justify-between items-center mb-1.5">
+                        <label for="presupuesto" class="text-xs font-bold uppercase tracking-wider text-slate-700">Presupuesto máximo</label>
+                        <span id="presupuesto-val" class="text-sm font-extrabold text-emerald-600">$5.000</span>
+                    </div>
+                    <input type="range" id="presupuesto" min="1000" max="10000" step="500" value="5000" 
+                           oninput="document.getElementById('presupuesto-val').innerText = '$' + Number(this.value).toLocaleString('es-CL')"
+                           class="w-full accent-emerald-600 cursor-pointer">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">Tipo de alimentación</label>
+                    <select id="tipo_alimentacion" class="w-full border border-slate-200 rounded-xl p-2.5 text-sm font-medium focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 focus:outline-none bg-slate-50/50">
+                        <option value="">Todas las dietas</option>
+                        <option value="vegano">🌱 Vegano</option>
+                        <option value="vegetariano">🥗 Vegetariano</option>
+                        <option value="sin_gluten">🌾 Sin Gluten</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">Excluir Alérgeno</label>
+                    <select id="alergeno" class="w-full border border-slate-200 rounded-xl p-2.5 text-sm font-medium focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 focus:outline-none bg-slate-50/50">
+                        <option value="">Sin restricciones de alérgenos</option>
+                        <option value="mani">🥜 Maní</option>
+                        <option value="lactosa">🥛 Lactosa</option>
+                        <option value="gluten">🌾 Gluten</option>
+                    </select>
+                </div>
+
+                <button onclick="buscarLocalizaciones()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-xl shadow-md shadow-emerald-200 hover:shadow-lg hover:shadow-emerald-300 transition-all active:scale-[0.98]">
+                    Buscar alternativas
+                </button>
             </div>
 
-            <div>
-                <label class="block text-sm font-semibold text-gray-700 mb-2">Excluir Alérgeno</label>
-                <select id="alergeno" class="w-full border border-gray-300 rounded-lg p-2 text-sm focus:ring-2 focus:ring-black focus:outline-none bg-white">
-                    <option value="">Ninguno</option>
-                    <option value="mani">Maní</option>
-                    <option value="lactosa">Lactosa</option>
-                    <option value="gluten">Gluten</option>
-                </select>
-            </div>
-
-            <button onclick="buscarLocalizaciones()" class="w-full bg-black text-white font-semibold py-2.5 rounded-lg hover:bg-gray-800 transition">
-                Buscar alternativas
-            </button>
-
-            <div class="border-t border-gray-100 pt-4">
-                <h3 class="text-md font-bold text-gray-900 mb-3" id="contador-resultados">Cargando locales...</h3>
-                <div id="lista-resultados" class="space-y-3 max-h-96 overflow-y-auto pr-1"></div>
+            <div class="border-t border-slate-100 pt-4 flex-grow">
+                <div class="flex justify-between items-center mb-3">
+                    <h3 class="text-sm font-bold text-slate-900" id="contador-resultados">Buscando alternativas...</h3>
+                    <span class="text-[10px] text-slate-400 font-medium">Click para enfocar</span>
+                </div>
+                <div id="lista-resultados" class="space-y-2.5 max-h-[340px] overflow-y-auto pr-1"></div>
             </div>
         </section>
 
-        <section class="md:col-span-7 lg:col-span-8 bg-white p-4 rounded-xl border border-gray-200 shadow-sm flex flex-col">
-            <h2 class="text-lg font-bold text-gray-900 mb-3">Mapa interactivo - San Joaquín</h2>
-            <div id="map" class="w-full h-[580px] rounded-lg border border-gray-200 z-0"></div>
+        <section class="md:col-span-7 lg:col-span-8 bg-white p-4 rounded-2xl border border-slate-200/80 shadow-sm flex flex-col">
+            <div class="flex justify-between items-center mb-3 px-1">
+                <h2 class="text-sm font-bold uppercase tracking-wider text-slate-700">Mapa del Entorno Universitario</h2>
+                <span class="inline-flex items-center gap-1.5 text-xs text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full font-semibold">
+                    <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                    USM San Joaquín
+                </span>
+            </div>
+            <div id="map" class="w-full h-[600px] rounded-xl border border-slate-200 z-0 shadow-inner"></div>
         </section>
 
     </main>
 
+    <section id="seccion-nosotros" class="hidden max-w-5xl mx-auto px-4 py-12 flex-grow w-full">
+        <div class="bg-white rounded-3xl border border-slate-200/80 p-8 md:p-12 shadow-sm space-y-8">
+            
+            <div class="text-center max-w-2xl mx-auto space-y-3">
+                <span class="inline-block text-xs font-black uppercase tracking-widest bg-emerald-100 text-emerald-800 px-3 py-1 rounded-full">
+                    Proyecto Universitario 2026
+                </span>
+                <h2 class="text-3xl md:text-4xl font-extrabold text-slate-900 tracking-tight">Sobre GEOFIT</h2>
+                <p class="text-slate-600 text-sm md:text-base leading-relaxed">
+                    Plataforma diseñada para ayudar a la comunidad estudiantil de la USM San Joaquín a localizar alternativas gastronómicas accesibles, nutritivas y compatibles con requerimientos especiales.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4">
+                <div class="bg-slate-50 p-6 rounded-2xl border border-slate-100 space-y-2">
+                    <div class="text-2xl">🎓</div>
+                    <h3 class="font-bold text-slate-900 text-lg">¿Quiénes somos?</h3>
+                    <p class="text-xs md:text-sm text-slate-600 leading-relaxed">
+                        Somos estudiantes de <strong>primer año de Ingeniería Civil Informática</strong> de la <strong>Universidad Técnica Federico Santa María (USM)</strong>, Campus San Joaquín. Este proyecto nace en el marco de la asignatura <strong>IWG400 - Proyecto Inicial</strong> (Paralelo 207, Equipo 4 Pentabyte).
+                    </p>
+                </div>
+
+                <div class="bg-slate-50 p-6 rounded-2xl border border-slate-100 space-y-2">
+                    <div class="text-2xl">💡</div>
+                    <h3 class="font-bold text-slate-900 text-lg">Nuestra Motivación</h3>
+                    <p class="text-xs md:text-sm text-slate-600 leading-relaxed">
+                        Buscamos resolver el colapso diario de los casinos del campus ofreciendo una herramienta centralizada donde los alumnos puedan filtrar locales reales cercanos según su presupuesto, dieta (vegana, vegetariana, sin gluten) y alérgenos.
+                    </p>
+                </div>
+            </div>
+
+            <div class="border-t border-slate-100 pt-8">
+                <h3 class="text-center text-xs font-bold uppercase tracking-widest text-slate-400 mb-6">Integrantes - Equipo Pentabyte</h3>
+                <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4 text-center">
+                    <div class="p-3 rounded-xl bg-slate-50 border border-slate-100"><p class="font-bold text-xs text-slate-800">Cristóbal González</p></div>
+                    <div class="p-3 rounded-xl bg-slate-50 border border-slate-100"><p class="font-bold text-xs text-slate-800">Laura Guajardo</p></div>
+                    <div class="p-3 rounded-xl bg-slate-50 border border-slate-100"><p class="font-bold text-xs text-slate-800">Leslie Guerra</p></div>
+                    <div class="p-3 rounded-xl bg-slate-50 border border-slate-100"><p class="font-bold text-xs text-slate-800">Sebastián Guzmán</p></div>
+                    <div class="p-3 rounded-xl bg-slate-50 border border-slate-100"><p class="font-bold text-xs text-slate-800">Vicente Henríquez</p></div>
+                </div>
+            </div>
+
+            <div class="text-center pt-4">
+                <button onclick="mostrarSeccion('buscar')" class="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-6 py-3 rounded-xl shadow-md transition">
+                    ← Volver al buscador de comida
+                </button>
+            </div>
+
+        </div>
+    </section>
+
+    <footer class="bg-white border-t border-slate-200 mt-auto py-4 text-center text-xs text-slate-400">
+        GEOFIT &copy; 2026 — Proyecto Inicial IWG400, USM San Joaquín.
+    </footer>
+
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
-        let map = L.map('map').setView([-33.4883, -70.6151], 15);
-
-        L.tileLayer('https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
-            maxZoom: 19,
-            attribution: '&copy; OpenStreetMap'
-        }).addTo(map);
-
-        L.marker([-33.4883, -70.6151]).addTo(map).bindPopup("<b>USM Campus San Joaquín</b>").openPopup();
-
-        // Diccionario para almacenar marcadores por ID
+        let map = null;
         let marcadores = {};
 
+        document.addEventListener('DOMContentLoaded', () => {
+            // Inicializar mapa al cargar el DOM
+            map = L.map('map').setView([-33.4883, -70.6151], 15);
+
+            L.tileLayer('https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
+                maxZoom: 19,
+                attribution: '&copy; OpenStreetMap'
+            }).addTo(map);
+
+            let usmIcon = L.divIcon({
+                className: 'custom-usm-pin',
+                html: `<div style="background-color: #16a34a; color: white; padding: 6px 10px; border-radius: 20px; font-weight: bold; font-size: 11px; border: 2px solid white; box-shadow: 0 4px 6px rgba(0,0,0,0.15);">📍 USM San Joaquín</div>`,
+                iconSize: [120, 30],
+                iconAnchor: [60, 15]
+            });
+            L.marker([-33.4883, -70.6151], {icon: usmIcon}).addTo(map).bindPopup("<b>USM Campus San Joaquín</b>").openPopup();
+
+            // Cargar locales iniciales
+            buscarLocalizaciones();
+        });
+
+        function mostrarSeccion(seccion) {
+            const secBuscar = document.getElementById('seccion-buscar');
+            const secNosotros = document.getElementById('seccion-nosotros');
+            const btnBuscar = document.getElementById('btn-nav-buscar');
+            const btnNosotros = document.getElementById('btn-nav-nosotros');
+
+            if (seccion === 'buscar') {
+                secBuscar.classList.remove('hidden');
+                secNosotros.classList.add('hidden');
+                btnBuscar.className = "px-4 py-2 rounded-lg text-sm font-bold transition bg-emerald-50 text-emerald-700";
+                btnNosotros.className = "px-4 py-2 rounded-lg text-sm font-semibold text-slate-600 hover:text-emerald-600 hover:bg-slate-100 transition";
+                if (map) setTimeout(() => map.invalidateSize(), 200);
+            } else {
+                secBuscar.classList.add('hidden');
+                secNosotros.classList.remove('hidden');
+                btnNosotros.className = "px-4 py-2 rounded-lg text-sm font-bold transition bg-emerald-50 text-emerald-700";
+                btnBuscar.className = "px-4 py-2 rounded-lg text-sm font-semibold text-slate-600 hover:text-emerald-600 hover:bg-slate-100 transition";
+            }
+        }
+
         function seleccionarLocal(id, lat, lng) {
-            map.flyTo([lat, lng], 17, { duration: 1.2 });
-            if (marcadores[id]) {
-                marcadores[id].openPopup();
+            if (map) {
+                map.flyTo([lat, lng], 17, { duration: 1.2 });
+                if (marcadores[id]) {
+                    marcadores[id].openPopup();
+                }
             }
         }
 
@@ -99,46 +232,49 @@ cat << 'EOF' > mi_proyecto/templates/index.html
             let alergeno = document.getElementById('alergeno').value;
 
             let url = `/api/buscar/?presupuesto=${presupuesto}`;
-            if (tipo) url += `&tipo=${tipo}`;
-            if (alergeno) url += `&alergeno=${alergeno}`;
+            if (tipo) url += `&tipo=${encodeURIComponent(tipo)}`;
+            if (alergeno) url += `&alergeno=${encodeURIComponent(alergeno)}`;
 
             try {
                 let response = await fetch(url);
                 let data = await response.json();
 
-                // Limpiar marcadores antiguos
-                Object.values(marcadores).forEach(m => map.removeLayer(m));
+                if (map) {
+                    Object.values(marcadores).forEach(m => map.removeLayer(m));
+                }
                 marcadores = {};
 
                 let listaHTML = '';
-                document.getElementById('contador-resultados').innerText = `Se encontraron ${data.resultados.length} opciones`;
+                document.getElementById('contador-resultados').innerText = `${data.resultados.length} alternativas encontradas`;
 
                 if (data.resultados.length === 0) {
-                    document.getElementById('lista-resultados').innerHTML = '<p class="text-sm text-gray-500">No se encontraron locales para este filtro.</p>';
+                    document.getElementById('lista-resultados').innerHTML = '<p class="text-xs text-slate-400 text-center py-6">No se encontraron opciones para este filtro.</p>';
                     return;
                 }
 
                 data.resultados.forEach(item => {
-                    // Crear marcador en el mapa
-                    let marker = L.marker([item.latitud, item.longitud]).addTo(map)
-                        .bindPopup(`<b>${item.lugar}</b><br>${item.plato} - $${item.precio}<br><small>${item.direccion}</small>`);
-                    
-                    marcadores[item.id] = marker;
+                    if (map) {
+                        let marker = L.marker([item.latitud, item.longitud]).addTo(map)
+                            .bindPopup(`<b>${item.lugar}</b><br>${item.plato} - $${item.precio.toLocaleString('es-CL')}<br><small class="text-slate-500">${item.direccion}</small>`);
+                        marcadores[item.id] = marker;
+                    }
 
                     let nutInfo = item.info_nutricional 
-                        ? `<p class="text-xs text-gray-500 mt-1">Calorías: ${item.info_nutricional.calorias} kcal | Prot: ${item.info_nutricional.proteinas}g</p>`
+                        ? `<p class="text-[11px] text-slate-500 mt-1">⚡ ${item.info_nutricional.calorias} kcal | 💪 Prot: ${item.info_nutricional.proteinas}g</p>`
                         : '';
 
                     listaHTML += `
                         <div onclick="seleccionarLocal(${item.id}, ${item.latitud}, ${item.longitud})" 
-                             class="border border-gray-200 rounded-lg p-3 hover:border-black hover:bg-white cursor-pointer transition bg-gray-50 shadow-sm">
+                             class="border border-slate-200/80 rounded-xl p-3 hover:border-emerald-500 hover:bg-emerald-50/30 cursor-pointer transition bg-slate-50/50 shadow-2xs group">
                             <div class="flex justify-between items-start">
-                                <h4 class="font-bold text-sm text-gray-900">${item.lugar}</h4>
-                                <span class="text-xs font-semibold bg-gray-200 text-gray-800 px-2 py-0.5 rounded">$${item.precio}</span>
+                                <h4 class="font-bold text-xs text-slate-900 group-hover:text-emerald-700 transition">${item.lugar}</h4>
+                                <span class="text-xs font-black text-emerald-700 bg-emerald-100/80 px-2 py-0.5 rounded-lg">$${item.precio.toLocaleString('es-CL')}</span>
                             </div>
-                            <p class="text-xs font-medium text-gray-700 mt-1">${item.plato}</p>
-                            <p class="text-[11px] text-gray-400 mt-0.5">${item.direccion}</p>
-                            <span class="inline-block mt-2 text-[10px] font-medium bg-green-100 text-green-800 px-2 py-0.5 rounded-full">${item.tipo_alimentacion}</span>
+                            <p class="text-xs font-medium text-slate-700 mt-0.5">${item.plato}</p>
+                            <p class="text-[10px] text-slate-400 mt-0.5 truncate">${item.direccion}</p>
+                            <div class="flex items-center gap-2 mt-1.5">
+                                <span class="inline-block text-[10px] font-bold bg-slate-200 text-slate-700 px-2 py-0.5 rounded-full">${item.tipo_alimentacion}</span>
+                            </div>
                             ${nutInfo}
                         </div>
                     `;
@@ -148,10 +284,9 @@ cat << 'EOF' > mi_proyecto/templates/index.html
 
             } catch (error) {
                 console.error("Error cargando alternativas:", error);
+                document.getElementById('contador-resultados').innerText = 'Error al cargar opciones';
             }
         }
-
-        buscarLocalizaciones();
     </script>
 </body>
 </html>
