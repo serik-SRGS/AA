@@ -8,11 +8,9 @@ from django.http import JsonResponse
 from django.shortcuts import render
 
 CACHE_OSM = Path(__file__).resolve().parent / 'osmcache.json'
-CAMPUS = (-33.4985, -70.6165)   # USM San Joaquín (aproximado)
-RADIO_M = 1500                  # radio de búsqueda en metros
+CAMPUS = (-33.4985, -70.6165)  
+RADIO_M = 1500                  
 
-# Solo los locales que estén aquí aparecen en el mapa.
-# Clave: nombre del local en minúsculas, sin tildes ni símbolos.
 MENUS = {
     "littlecaesars": {"cat": "Pizzería", "alergenos": ["gluten", "lactosa"], "platos": [
         {"nombre": "Familiar Queso", "precio": 5500, "tipo": "vegetariano"},
@@ -85,7 +83,7 @@ def obtener_cercanos():
         with urllib.request.urlopen(req, timeout=40) as r:
             elementos = json.load(r).get("elements", [])
     except Exception:
-        return []  # sin red: no se guarda, se reintenta la próxima vez
+        return []  
 
     lugares, vistos = [], set()
     for el in elementos:
