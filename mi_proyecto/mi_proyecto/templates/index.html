@@ -177,8 +177,7 @@
         let marcadores = {};
 
         document.addEventListener('DOMContentLoaded', () => {
-            // Inicializar mapa al cargar el DOM
-            map = L.map('map').setView([-33.4883, -70.6151], 15);
+            map = L.map('map').setView([-33.4906, -70.6181], 16);
 
             L.tileLayer('https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
                 maxZoom: 19,
@@ -191,9 +190,8 @@
                 iconSize: [120, 30],
                 iconAnchor: [60, 15]
             });
-            L.marker([-33.4883, -70.6151], {icon: usmIcon}).addTo(map).bindPopup("<b>USM Campus San Joaquín</b>").openPopup();
+            L.marker([-33.4906, -70.6181], {icon: usmIcon}).addTo(map).bindPopup("<b>Universidad Técnica Federico Santa María<br>Campus San Joaquín</b>").openPopup();
 
-            // Cargar locales iniciales
             buscarLocalizaciones();
         });
 
