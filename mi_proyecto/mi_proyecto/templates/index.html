@@ -1,3 +1,4 @@
+cat << 'EOF' > mi_proyecto/templates/index.html
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -23,7 +24,7 @@
         <section class="md:col-span-5 lg:col-span-4 bg-white p-6 rounded-xl border border-gray-200 shadow-sm space-y-6">
             <div>
                 <h2 class="text-xl font-bold text-gray-900">Busca alternativas</h2>
-                <p class="text-sm text-gray-500 mt-1">Filtra por presupuesto, dieta y alérgenos en San Joaquín.</p>
+                <p class="text-sm text-gray-500 mt-1">Filtra por presupuesto, dieta y alérgenos cerca de la USM.</p>
             </div>
 
             <div>
@@ -55,18 +56,18 @@
             </div>
 
             <button onclick="buscarLocalizaciones()" class="w-full bg-black text-white font-semibold py-2.5 rounded-lg hover:bg-gray-800 transition">
-                Buscar alternativas reales
+                Buscar alternativas
             </button>
 
             <div class="border-t border-gray-100 pt-4">
                 <h3 class="text-md font-bold text-gray-900 mb-3" id="contador-resultados">Cargando locales...</h3>
-                <div id="lista-resultados" class="space-y-3 max-h-80 overflow-y-auto pr-1"></div>
+                <div id="lista-resultados" class="space-y-3 max-h-96 overflow-y-auto pr-1"></div>
             </div>
         </section>
 
         <section class="md:col-span-7 lg:col-span-8 bg-white p-4 rounded-xl border border-gray-200 shadow-sm flex flex-col">
-            <h2 class="text-lg font-bold text-gray-900 mb-3">Mapa en vivo - San Joaquín</h2>
-            <div id="map" class="w-full h-[550px] rounded-lg border border-gray-200 z-0"></div>
+            <h2 class="text-lg font-bold text-gray-900 mb-3">Mapa interactivo - San Joaquín</h2>
+            <div id="map" class="w-full h-[580px] rounded-lg border border-gray-200 z-0"></div>
         </section>
 
     </main>
@@ -82,7 +83,15 @@
 
         L.marker([-33.4883, -70.6151]).addTo(map).bindPopup("<b>USM Campus San Joaquín</b>").openPopup();
 
-        let marcadores = [];
+        // Diccionario para almacenar marcadores por ID
+        let marcadores = {};
+
+        function seleccionarLocal(id, lat, lng) {
+            map.flyTo([lat, lng], 17, { duration: 1.2 });
+            if (marcadores[id]) {
+                marcadores[id].openPopup();
+            }
+        }
 
         async function buscarLocalizaciones() {
             let presupuesto = document.getElementById('presupuesto').value;
@@ -97,11 +106,12 @@
                 let response = await fetch(url);
                 let data = await response.json();
 
-                marcadores.forEach(m => map.removeLayer(m));
-                marcadores = [];
+                // Limpiar marcadores antiguos
+                Object.values(marcadores).forEach(m => map.removeLayer(m));
+                marcadores = {};
 
                 let listaHTML = '';
-                document.getElementById('contador-resultados').innerText = `Se encontraron ${data.resultados.length} locales reales`;
+                document.getElementById('contador-resultados').innerText = `Se encontraron ${data.resultados.length} opciones`;
 
                 if (data.resultados.length === 0) {
                     document.getElementById('lista-resultados').innerHTML = '<p class="text-sm text-gray-500">No se encontraron locales para este filtro.</p>';
@@ -109,21 +119,25 @@
                 }
 
                 data.resultados.forEach(item => {
+                    // Crear marcador en el mapa
                     let marker = L.marker([item.latitud, item.longitud]).addTo(map)
-                        .bindPopup(`<b>${item.lugar}</b><br>${item.plato} - $${item.precio}`);
-                    marcadores.push(marker);
+                        .bindPopup(`<b>${item.lugar}</b><br>${item.plato} - $${item.precio}<br><small>${item.direccion}</small>`);
+                    
+                    marcadores[item.id] = marker;
 
                     let nutInfo = item.info_nutricional 
                         ? `<p class="text-xs text-gray-500 mt-1">Calorías: ${item.info_nutricional.calorias} kcal | Prot: ${item.info_nutricional.proteinas}g</p>`
                         : '';
 
                     listaHTML += `
-                        <div class="border border-gray-200 rounded-lg p-3 hover:border-black transition bg-gray-50">
+                        <div onclick="seleccionarLocal(${item.id}, ${item.latitud}, ${item.longitud})" 
+                             class="border border-gray-200 rounded-lg p-3 hover:border-black hover:bg-white cursor-pointer transition bg-gray-50 shadow-sm">
                             <div class="flex justify-between items-start">
                                 <h4 class="font-bold text-sm text-gray-900">${item.lugar}</h4>
                                 <span class="text-xs font-semibold bg-gray-200 text-gray-800 px-2 py-0.5 rounded">$${item.precio}</span>
                             </div>
                             <p class="text-xs font-medium text-gray-700 mt-1">${item.plato}</p>
+                            <p class="text-[11px] text-gray-400 mt-0.5">${item.direccion}</p>
                             <span class="inline-block mt-2 text-[10px] font-medium bg-green-100 text-green-800 px-2 py-0.5 rounded-full">${item.tipo_alimentacion}</span>
                             ${nutInfo}
                         </div>
