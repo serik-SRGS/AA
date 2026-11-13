@@ -24,8 +24,6 @@ MENUS = {
         {"nombre": "Familiar 3 Meat Treat", "precio": 10000, "tipo": ""}]},
     "subway": {"cat": "Sándwiches", "alergenos": ["gluten"], "platos": [
         {"nombre": "Sub Vegetariano 15cm", "precio": 3200, "tipo": "vegetariano"}]},
-    "sushilove": {"cat": "Sushi", "alergenos": [], "platos": [
-        {"nombre": "Handroll Vegano Palta Champiñón", "precio": 2800, "tipo": "vegano"}]},
     "doggis": {"cat": "Comida rápida", "alergenos": ["gluten", "lactosa"], "platos": [
         {"nombre": "Empanadas de Queso x3", "precio": 2500, "tipo": "vegetariano"}]},
     "starbucks": {"cat": "Cafetería", "alergenos": ["gluten"], "platos": [
@@ -34,20 +32,35 @@ MENUS = {
         {"nombre": "McPapas Medianas + Ensalada Verde", "precio": 2900, "tipo": "vegano"}]},
     "pedrojuan": {"cat": "Comida rápida", "alergenos": [], "platos": [
         {"nombre": "Papas Fritas Familiar con Salsa Ajo", "precio": 3400, "tipo": "vegetariano"}]},
-    "pamefood": {"cat": "Ensaladas", "alergenos": [], "platos": [
-        {"nombre": "Ensalada Completa de Quínoa y Palta", "precio": 3600, "tipo": "vegano"}]},
     "elfito": {"cat": "Restaurante", "alergenos": ["lactosa"], "platos": [
         {"nombre": "Plato Ejecutivo Vegetariano del Día", "precio": 3800, "tipo": "vegetariano"}]},
+}
+
+# Locales SIN CONFIRMAR: no se usan en la app. Si verifican que existen (y sus platos/precios),
+# muévanlos arriba a MENUS y agréguenlos a UBICACIONES con sus coordenadas.
+POR_VERIFICAR = {
+    "donerkebab": {"cat": "Kebab", "alergenos": ["gluten"], "platos": [
+        {"nombre": "Wrap de Falafel con Salsa de Sésamo", "precio": 3900, "tipo": "vegano"}]},
+    "pamefood": {"cat": "Ensaladas", "alergenos": [], "platos": [
+        {"nombre": "Ensalada Completa de Quínoa y Palta", "precio": 3600, "tipo": "vegano"}]},
     "bicicleta": {"cat": "Restaurante", "alergenos": [], "platos": [
         {"nombre": "Tabla Vegana de Hummus y Verduras", "precio": 4800, "tipo": "vegano"}]},
     "piccola": {"cat": "Restaurante italiano", "alergenos": ["gluten"], "platos": [
         {"nombre": "Minestrone de Verduras Frescas", "precio": 4200, "tipo": "vegetariano"}]},
     "mardoqueo": {"cat": "Fuente de soda", "alergenos": [], "platos": [
         {"nombre": "Papas Fritas Grandes + Bebida", "precio": 4000, "tipo": "vegano"}]},
-    "donerkebab": {"cat": "Kebab", "alergenos": ["gluten"], "platos": [
-        {"nombre": "Wrap de Falafel con Salsa de Sésamo", "precio": 3900, "tipo": "vegano"}]},
     "dgustar": {"cat": "Pastelería", "alergenos": ["mani"], "platos": [
         {"nombre": "Tarta de Avena y Frutas Sin Lactosa", "precio": 2900, "tipo": "sin_gluten"}]},
+}
+
+# Locales que están en MENUS pero NO en OpenStreetMap (osmcache.json).
+# Para que aparezcan en el mapa, completen lat y lon de cada uno:
+#   Google Maps -> clic derecho sobre el local -> clic en las coordenadas (se copian).
+# Mientras lat/lon estén en None, el local NO se muestra (es lo que pasaba antes).
+UBICACIONES = {
+    "doggis":     {"nombre": "Doggis",              "direccion": "Cerca del campus", "lat": -33.48662815087975, "lon": -70.61639128417969},
+    "mcdonald":   {"nombre": "McDonald's",          "direccion": "Cerca del campus", "lat": -33.508703795950304, "lon": -70.61639128417969},
+    "pedrojuan":  {"nombre": "Pedro, Juan y Diego", "direccion": "Cerca del campus", "lat": -33.516321810109865, "lon": -70.59782797343966},
 }
 
 
@@ -108,6 +121,20 @@ def obtener_cercanos():
     return lugares
 
 
+def obtener_locales():
+    """Locales de OpenStreetMap + los de UBICACIONES que tengan coordenadas."""
+    lugares = list(obtener_cercanos())
+    nombres = [_normal(l['lugar']) for l in lugares]
+    for i, (clave, u) in enumerate(UBICACIONES.items()):
+        if u['lat'] is None or u['lon'] is None:
+            continue  # sin coordenadas no se puede dibujar
+        if any(clave in n for n in nombres):
+            continue  # ya vino desde OpenStreetMap
+        lugares.append({"id": 2000 + i, "lugar": u['nombre'],
+                        "direccion": u['direccion'], "lat": u['lat'], "lon": u['lon']})
+    return lugares
+
+
 def _menu_de(nombre):
     n = _normal(nombre)
     for clave, menu in MENUS.items():
@@ -129,7 +156,7 @@ def buscar_alternativas(request):
     alergeno_filtro = request.GET.get('alergeno', '').strip().lower()
 
     resultados = []
-    for item in obtener_cercanos():
+    for item in obtener_locales():
         menu = _menu_de(item['lugar'])
         if not menu:
             continue  # sin menú y precio cargados no se muestra
