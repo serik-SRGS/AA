@@ -43,6 +43,9 @@
                 <button id="btn-nav-buscar" onclick="mostrarSeccion('buscar')" class="px-4 py-2 rounded-lg text-sm font-bold transition bg-emerald-50 text-emerald-700">
                     🔍 Buscar
                 </button>
+                <button id="btn-nav-menu" onclick="mostrarSeccion('menu')" class="px-4 py-2 rounded-lg text-sm font-semibold text-slate-600 hover:text-emerald-600 hover:bg-slate-100 transition">
+                    🍽️ Menú del día
+                </button>
                 <button id="btn-nav-nosotros" onclick="mostrarSeccion('nosotros')" class="px-4 py-2 rounded-lg text-sm font-semibold text-slate-600 hover:text-emerald-600 hover:bg-slate-100 transition">
                     👥 Sobre Nosotros
                 </button>
@@ -89,6 +92,16 @@
                     </select>
                 </div>
 
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">Momento del día</label>
+                    <select id="momento" class="w-full border border-slate-200 rounded-xl p-2.5 text-sm font-medium focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 focus:outline-none bg-slate-50/50">
+                        <option value="">Cualquier momento</option>
+                        <option value="desayuno">☕ Desayuno</option>
+                        <option value="almuerzo">🍛 Almuerzo</option>
+                        <option value="cena">🌙 Cena</option>
+                    </select>
+                </div>
+
                 <button onclick="buscarLocalizaciones()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-xl shadow-md shadow-emerald-200 hover:shadow-lg hover:shadow-emerald-300 transition-all active:scale-[0.98]">
                     Buscar alternativas
                 </button>
@@ -115,6 +128,55 @@
         </section>
 
     </main>
+
+    <section id="seccion-menu" class="hidden max-w-5xl mx-auto px-4 py-8 flex-grow w-full">
+        <div class="bg-white rounded-3xl border border-slate-200/80 p-6 md:p-8 shadow-sm space-y-6">
+            <div class="border-b border-slate-100 pb-3">
+                <h2 class="text-xl font-bold text-slate-900">Calculadora de menú diario</h2>
+                <p class="text-xs text-slate-500 mt-1">Arma desayuno, almuerzo y cena con locales cerca del campus, ajustados a tu presupuesto y a tu meta de calorías.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <div>
+                    <label for="menu-presupuesto" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">Presupuesto del día ($)</label>
+                    <input type="number" id="menu-presupuesto" min="0" step="500" value="10000" class="w-full border border-slate-200 rounded-xl p-2.5 text-sm font-medium bg-slate-50/50 focus:ring-2 focus:ring-emerald-500 focus:outline-none">
+                </div>
+                <div>
+                    <label for="menu-kcal" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">Meta de calorías (kcal)</label>
+                    <input type="number" id="menu-kcal" min="800" max="5000" step="50" value="2000" class="w-full border border-slate-200 rounded-xl p-2.5 text-sm font-medium bg-slate-50/50 focus:ring-2 focus:ring-emerald-500 focus:outline-none">
+                </div>
+                <div>
+                    <label for="menu-tipo" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">Tipo de alimentación</label>
+                    <select id="menu-tipo" class="w-full border border-slate-200 rounded-xl p-2.5 text-sm font-medium bg-slate-50/50 focus:ring-2 focus:ring-emerald-500 focus:outline-none">
+                        <option value="">Todas las dietas</option>
+                        <option value="vegano">🌱 Vegano</option>
+                        <option value="vegetariano">🥗 Vegetariano</option>
+                        <option value="sin_gluten">🌾 Sin Gluten</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="menu-alergeno" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">Excluir alérgeno</label>
+                    <select id="menu-alergeno" class="w-full border border-slate-200 rounded-xl p-2.5 text-sm font-medium bg-slate-50/50 focus:ring-2 focus:ring-emerald-500 focus:outline-none">
+                        <option value="">Sin restricciones</option>
+                        <option value="mani">🥜 Maní</option>
+                        <option value="lactosa">🥛 Lactosa</option>
+                        <option value="gluten">🌾 Gluten</option>
+                    </select>
+                </div>
+            </div>
+
+            <button onclick="calcularMenuDia()" class="w-full md:w-auto bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-8 py-3 rounded-xl shadow-md shadow-emerald-200 transition-all active:scale-[0.98]">
+                Armar mi menú del día
+            </button>
+
+            <div id="menu-resultado" class="space-y-4"></div>
+
+            <p class="text-[11px] text-slate-400 leading-relaxed border-t border-slate-100 pt-3">
+                Los valores de calorías y proteínas son estimaciones referenciales por porción individual; los formatos para compartir no se incluyen.
+                No reemplazan la indicación de un profesional de la salud.
+            </p>
+        </div>
+    </section>
 
     <section id="seccion-nosotros" class="hidden max-w-5xl mx-auto px-4 py-12 flex-grow w-full">
         <div class="bg-white rounded-3xl border border-slate-200/80 p-8 md:p-12 shadow-sm space-y-8">
@@ -196,23 +258,13 @@
         });
 
         function mostrarSeccion(seccion) {
-            const secBuscar = document.getElementById('seccion-buscar');
-            const secNosotros = document.getElementById('seccion-nosotros');
-            const btnBuscar = document.getElementById('btn-nav-buscar');
-            const btnNosotros = document.getElementById('btn-nav-nosotros');
-
-            if (seccion === 'buscar') {
-                secBuscar.classList.remove('hidden');
-                secNosotros.classList.add('hidden');
-                btnBuscar.className = "px-4 py-2 rounded-lg text-sm font-bold transition bg-emerald-50 text-emerald-700";
-                btnNosotros.className = "px-4 py-2 rounded-lg text-sm font-semibold text-slate-600 hover:text-emerald-600 hover:bg-slate-100 transition";
-                if (map) setTimeout(() => map.invalidateSize(), 200);
-            } else {
-                secBuscar.classList.add('hidden');
-                secNosotros.classList.remove('hidden');
-                btnNosotros.className = "px-4 py-2 rounded-lg text-sm font-bold transition bg-emerald-50 text-emerald-700";
-                btnBuscar.className = "px-4 py-2 rounded-lg text-sm font-semibold text-slate-600 hover:text-emerald-600 hover:bg-slate-100 transition";
-            }
+            const activo = "px-4 py-2 rounded-lg text-sm font-bold transition bg-emerald-50 text-emerald-700";
+            const inactivo = "px-4 py-2 rounded-lg text-sm font-semibold text-slate-600 hover:text-emerald-600 hover:bg-slate-100 transition";
+            ['buscar', 'menu', 'nosotros'].forEach(s => {
+                document.getElementById('seccion-' + s).classList.toggle('hidden', s !== seccion);
+                document.getElementById('btn-nav-' + s).className = (s === seccion) ? activo : inactivo;
+            });
+            if (seccion === 'buscar' && map) setTimeout(() => map.invalidateSize(), 200);
         }
 
         function seleccionarLocal(id, lat, lng) {
@@ -228,10 +280,12 @@
             let presupuesto = document.getElementById('presupuesto').value;
             let tipo = document.getElementById('tipo_alimentacion').value;
             let alergeno = document.getElementById('alergeno').value;
+            let momento = document.getElementById('momento').value;
 
             let url = `/api/buscar/?presupuesto=${presupuesto}`;
             if (tipo) url += `&tipo=${encodeURIComponent(tipo)}`;
             if (alergeno) url += `&alergeno=${encodeURIComponent(alergeno)}`;
+            if (momento) url += `&momento=${encodeURIComponent(momento)}`;
 
             try {
                 let response = await fetch(url);
@@ -257,23 +311,27 @@
                         marcadores[item.id] = marker;
                     }
 
-                    let nutInfo = item.info_nutricional 
-                        ? `<p class="text-[11px] text-slate-500 mt-1">⚡ ${item.info_nutricional.calorias} kcal | 💪 Prot: ${item.info_nutricional.proteinas}g</p>`
-                        : '';
+                    let platosHTML = item.platos.map(p => `
+                        <div class="mt-1.5">
+                            <div class="flex justify-between gap-2 text-xs text-slate-700">
+                                <span class="font-medium">${p.nombre}${p.compartir ? ' <em class="text-slate-400 font-normal">(para compartir)</em>' : ''}</span>
+                                <span class="font-semibold whitespace-nowrap">$${p.precio.toLocaleString('es-CL')}</span>
+                            </div>
+                            <p class="text-[11px] text-slate-500">${p.kcal != null ? '⚡ ≈' + p.kcal + ' kcal | 💪 ' + p.prot + ' g prot.' : '⚡ sin dato nutricional'}</p>
+                        </div>`).join('');
 
                     listaHTML += `
                         <div onclick="seleccionarLocal(${item.id}, ${item.latitud}, ${item.longitud})" 
                              class="border border-slate-200/80 rounded-xl p-3 hover:border-emerald-500 hover:bg-emerald-50/30 cursor-pointer transition bg-slate-50/50 shadow-2xs group">
                             <div class="flex justify-between items-start">
                                 <h4 class="font-bold text-xs text-slate-900 group-hover:text-emerald-700 transition">${item.lugar}</h4>
-                                <span class="text-xs font-black text-emerald-700 bg-emerald-100/80 px-2 py-0.5 rounded-lg">$${item.precio.toLocaleString('es-CL')}</span>
+                                <span class="text-xs font-black text-emerald-700 bg-emerald-100/80 px-2 py-0.5 rounded-lg">desde $${item.precio.toLocaleString('es-CL')}</span>
                             </div>
-                            <p class="text-xs font-medium text-slate-700 mt-0.5">${item.plato}</p>
+                            ${platosHTML}
                             <p class="text-[10px] text-slate-400 mt-0.5 truncate">${item.direccion}</p>
                             <div class="flex items-center gap-2 mt-1.5">
                                 <span class="inline-block text-[10px] font-bold bg-slate-200 text-slate-700 px-2 py-0.5 rounded-full">${item.tipo_alimentacion}</span>
                             </div>
-                            ${nutInfo}
                         </div>
                     `;
                 });
@@ -285,7 +343,89 @@
                 document.getElementById('contador-resultados').innerText = 'Error al cargar opciones';
             }
         }
+
+        const MOMENTOS_UI = {
+            desayuno: {icono: '☕', titulo: 'Desayuno'},
+            almuerzo: {icono: '🍛', titulo: 'Almuerzo'},
+            cena: {icono: '🌙', titulo: 'Cena'}
+        };
+
+        async function calcularMenuDia() {
+            const caja = document.getElementById('menu-resultado');
+            const presupuesto = document.getElementById('menu-presupuesto').value || 0;
+            const kcal = document.getElementById('menu-kcal').value || 2000;
+            const tipo = document.getElementById('menu-tipo').value;
+            const alergeno = document.getElementById('menu-alergeno').value;
+
+            let url = `/api/menu-diario/?presupuesto=${encodeURIComponent(presupuesto)}&kcal=${encodeURIComponent(kcal)}`;
+            if (tipo) url += `&tipo=${encodeURIComponent(tipo)}`;
+            if (alergeno) url += `&alergeno=${encodeURIComponent(alergeno)}`;
+
+            caja.innerHTML = '<p class="text-xs text-slate-400">Calculando...</p>';
+            try {
+                const r = await fetch(url);
+                const d = await r.json();
+                const fmt = n => '$' + Number(n).toLocaleString('es-CL');
+
+                if (!d.hay_menu) {
+                    let msg;
+                    if (d.sin_opciones.length > 0) {
+                        msg = 'No hay opciones con ese presupuesto y esos filtros para: ' + d.sin_opciones.join(', ') + '. Prueba con otra dieta, otro alérgeno o más presupuesto.';
+                    } else {
+                        msg = 'Con ' + fmt(d.presupuesto) + ' no alcanza para armar desayuno, almuerzo y cena. Necesitas al menos ' + fmt(d.presupuesto_minimo) + '.';
+                    }
+                    caja.innerHTML = '<div class="bg-amber-50 border border-amber-200 text-amber-800 text-sm rounded-xl p-4">' + msg + '</div>';
+                    return;
+                }
+
+                let html = '<div class="grid grid-cols-1 md:grid-cols-3 gap-4">';
+                Object.keys(MOMENTOS_UI).forEach(m => {
+                    const c = d.comidas[m];
+                    const ui = MOMENTOS_UI[m];
+                    if (c) {
+                        html += `
+                        <div class="border border-slate-200 rounded-2xl p-4 bg-slate-50/50">
+                            <p class="text-xs font-bold uppercase tracking-wider text-emerald-700">${ui.icono} ${ui.titulo}</p>
+                            <h4 class="font-bold text-sm text-slate-900 mt-1">${c.plato}</h4>
+                            <p class="text-xs text-slate-600">${c.lugar}</p>
+                            <p class="text-[10px] text-slate-400 truncate">${c.direccion}</p>
+                            <div class="flex justify-between items-center mt-3">
+                                <span class="text-sm font-black text-emerald-700">${fmt(c.precio)}</span>
+                                <span class="text-[11px] text-slate-500">⚡ ≈${c.kcal} kcal | 💪 ${c.prot} g</span>
+                            </div>
+                        </div>`;
+                    } else {
+                        html += `
+                        <div class="border border-dashed border-slate-300 rounded-2xl p-4 text-xs text-slate-400">
+                            <p class="font-bold uppercase tracking-wider">${ui.icono} ${ui.titulo}</p>
+                            <p class="mt-1">Sin opciones para estos filtros.</p>
+                        </div>`;
+                    }
+                });
+                html += '</div>';
+
+                const dif = d.diferencia_kcal;
+                let estado;
+                if (Math.abs(dif) <= 100) estado = 'Estás muy cerca de tu meta.';
+                else if (dif > 0) estado = 'Te faltan ≈' + dif + ' kcal para tu meta (' + d.objetivo_kcal + ' kcal); el catálogo actual no tiene más opciones dentro de tu presupuesto.';
+                else estado = 'Te pasas ≈' + Math.abs(dif) + ' kcal de tu meta (' + d.objetivo_kcal + ' kcal).';
+
+                html += `
+                    <div class="bg-emerald-50 border border-emerald-200 rounded-xl p-4 flex flex-wrap gap-x-8 gap-y-1 items-center">
+                        <span class="text-sm font-bold text-emerald-900">Total del día: ${fmt(d.totales.precio)}</span>
+                        <span class="text-sm font-bold text-emerald-900">⚡ ≈${d.totales.kcal} kcal</span>
+                        <span class="text-sm font-bold text-emerald-900">💪 ${d.totales.prot} g proteína</span>
+                        <span class="text-xs text-emerald-800 w-full">${estado}</span>
+                    </div>`;
+                if (d.sin_opciones.length > 0) {
+                    html += '<p class="text-xs text-amber-700">Sin opciones para: ' + d.sin_opciones.join(', ') + '.</p>';
+                }
+                caja.innerHTML = html;
+            } catch (error) {
+                console.error('Error calculando menú:', error);
+                caja.innerHTML = '<p class="text-xs text-red-500">Error al calcular el menú.</p>';
+            }
+        }
     </script>
 </body>
 </html>
-EOF
