@@ -1,0 +1,318 @@
+local,plato,precio,tipo,kcal,prot,momento,compartir,alergenos
+Subway,Sub Vegetariano 15cm,3200,vegetariano,230,9,,,gluten
+El Fito Restaurante,Plato Ejecutivo Vegetariano del Día,3800,vegetariano,650,20,almuerzo,,lactosa
+WEI HUA RESTAURANT,Chapsui Ave con arroz,5300,,750,30,almuerzo|cena,,gluten
+WEI HUA RESTAURANT,Chapsui Ave con papas,5500,,850,29,almuerzo|cena,,gluten
+WEI HUA RESTAURANT,Chapsui Carne con arroz,5300,,780,32,almuerzo|cena,,gluten
+WEI HUA RESTAURANT,Chapsui Carne con papas,5500,,880,31,almuerzo|cena,,gluten
+WEI HUA RESTAURANT,Pollo Mongoliano con arroz,5500,,850,35,almuerzo|cena,,gluten
+WEI HUA RESTAURANT,Pollo Mongoliano con papas,5700,,950,34,almuerzo|cena,,gluten
+WEI HUA RESTAURANT,Carne Mongoliana con arroz,5700,,900,36,almuerzo|cena,,gluten
+WEI HUA RESTAURANT,Carne Mongoliana con papas,5900,,1000,35,almuerzo|cena,,gluten
+WEI HUA RESTAURANT,Costillar Cantones con arroz,6000,,950,33,almuerzo|cena,,gluten
+WEI HUA RESTAURANT,Costillar Cantones con papas,6200,,1050,32,almuerzo|cena,,gluten
+WEI HUA RESTAURANT,Pollo Piña con arroz,5800,,800,32,almuerzo|cena,,gluten
+WEI HUA RESTAURANT,Pollo Piña con papas,6000,,900,31,almuerzo|cena,,gluten
+WEI HUA RESTAURANT,Pollo Solo con arroz,6000,,780,38,almuerzo|cena,,gluten
+WEI HUA RESTAURANT,Pollo Solo con papas,6200,,880,37,almuerzo|cena,,gluten
+WEI HUA RESTAURANT,Carne Sola con arroz,6200,,820,40,almuerzo|cena,,gluten
+WEI HUA RESTAURANT,Carne Sola con papas,6400,,920,39,almuerzo|cena,,gluten
+WEI HUA RESTAURANT,Pollo Champiñón con arroz,6000,,800,36,almuerzo|cena,,gluten
+WEI HUA RESTAURANT,Pollo Champiñón con papas,6200,,900,35,almuerzo|cena,,gluten
+WEI HUA RESTAURANT,Carne Champiñón con arroz,6200,,840,38,almuerzo|cena,,gluten
+WEI HUA RESTAURANT,Carne Champiñón con papas,6400,,940,37,almuerzo|cena,,gluten
+WEI HUA RESTAURANT,Carne Piña con arroz,5900,,830,34,almuerzo|cena,,gluten
+WEI HUA RESTAURANT,Carne Piña con papas,6100,,930,33,almuerzo|cena,,gluten
+PERUBRASAS,MiniMostriro,5500,,800,30,almuerzo|cena,,gluten
+PERUBRASAS,1/4 pollo a las brasas solo tuto,4200,,450,33,almuerzo|cena,,gluten
+PERUBRASAS,1/4 pollo solo pecho,4500,,400,42,almuerzo|cena,,gluten
+PERUBRASAS,1/4 pollo a las brasas con papas y cremas,6800,,850,38,almuerzo|cena,,gluten
+PERUBRASAS,1/4 pollo con papas ensalada y cremas,7900,,900,38,almuerzo|cena,,gluten
+PERUBRASAS,1/4 pollo con papas fritas arroz ensalada y cremas,9000,,1100,42,almuerzo|cena,,gluten
+PERUBRASAS,1/2 pollo a las brasas solo,9000,,900,70,almuerzo|cena,si,gluten
+PERUBRASAS,1/2 pollo con papas y cremas,13500,,1500,75,almuerzo|cena,si,gluten
+PERUBRASAS,1/2 pollo con papas ensalada y cremas,14000,,1550,75,almuerzo|cena,si,gluten
+PERUBRASAS,1/2 pollo con papas arroz blanco ensalada y cremas,17500,,1850,80,almuerzo|cena,si,gluten
+PERUBRASAS,Pollo solo,14000,,1800,140,almuerzo|cena,si,gluten
+PERUBRASAS,Pollo entero P1 (papas fritas y cremas),19900,,3000,145,almuerzo|cena,si,gluten
+PERUBRASAS,Pollo entero P2 (papas fritas ensalada y cremas),20900,,3200,150,almuerzo|cena,si,gluten
+PERUBRASAS,Pollo entero + bebida 1.5 L,23900,,3700,150,almuerzo|cena,si,gluten
+PERUBRASAS,Monstruo Personal,9500,,1300,45,almuerzo|cena,,gluten
+PERUBRASAS,Medio Monstruo,18500,,2400,85,almuerzo|cena,si,gluten
+PERUBRASAS,Monstruo Familiar,27500,,4500,160,almuerzo|cena,si,gluten
+PERUBRASAS,Super Monstruo Familiar,29500,,5100,160,almuerzo|cena,si,gluten
+PERUBRASAS,Sandwich de pollo a las brasas con papas fritas,5500,,700,30,almuerzo|cena,,gluten
+MC CHARLY,Lasaña con ensalada y mini bebida,6990,,750,32,almuerzo|cena,,gluten|lactosa
+MC CHARLY,Chuleta al horno (ensalada bebida y acompañamiento),6990,,900,40,almuerzo|cena,,
+MC CHARLY,Pechuga a la plancha (ensalada bebida y acompañamiento),6990,,750,50,almuerzo|cena,,
+MC CHARLY,Costillar al horno (ensalada bebida y acompañamiento),6990,,1000,45,almuerzo|cena,,
+MC CHARLY,Salteado de cerdo (ensalada bebida y acompañamiento),6990,,850,40,almuerzo|cena,,
+MC CHARLY,1/4 de pollo horneado (ensalada bebida y acompañamiento),6990,,850,45,almuerzo|cena,,
+Restaurante Xin Wen Hua,Chapsui Pollo con arroz,6800,,750,30,almuerzo|cena,,gluten
+Restaurante Xin Wen Hua,Chapsui Pollo con papas,7800,,850,29,almuerzo|cena,,gluten
+Restaurante Xin Wen Hua,Chapsui Carne con arroz,6800,,780,32,almuerzo|cena,,gluten
+Restaurante Xin Wen Hua,Chapsui Carne con papas,7800,,880,31,almuerzo|cena,,gluten
+Restaurante Xin Wen Hua,Chapsui Verduras con arroz,6800,vegetariano,650,14,almuerzo|cena,,gluten
+Restaurante Xin Wen Hua,Chapsui Verduras con papas,7800,vegetariano,750,13,almuerzo|cena,,gluten
+Restaurante Xin Wen Hua,Chapsui Especial con arroz,7500,,850,36,almuerzo|cena,,gluten
+Restaurante Xin Wen Hua,Chapsui Especial con papas,8500,,950,35,almuerzo|cena,,gluten
+Restaurante Xin Wen Hua,Diente de Dragón Pollo con arroz,6900,,900,34,almuerzo|cena,,gluten
+Restaurante Xin Wen Hua,Diente de Dragón Pollo con papas,7900,,1000,33,almuerzo|cena,,gluten
+Restaurante Xin Wen Hua,Diente de Dragón Carne con arroz,6900,,920,35,almuerzo|cena,,gluten
+Restaurante Xin Wen Hua,Diente de Dragón Carne con papas,7900,,1020,34,almuerzo|cena,,gluten
+Restaurante Xin Wen Hua,Pollo Chite con arroz,7000,,800,34,almuerzo|cena,,gluten
+Restaurante Xin Wen Hua,Pollo Chite con papas,8000,,900,33,almuerzo|cena,,gluten
+Restaurante Xin Wen Hua,Pollo Cebollín con arroz,7000,,780,34,almuerzo|cena,,gluten
+Restaurante Xin Wen Hua,Pollo Cebollín con papas,8000,,880,33,almuerzo|cena,,gluten
+Restaurante Xin Wen Hua,Carne Cebollín con arroz,7000,,800,36,almuerzo|cena,,gluten
+Restaurante Xin Wen Hua,Carne Cebollín con papas,8000,,900,35,almuerzo|cena,,gluten
+Restaurante Xin Wen Hua,Pollo/Carne Cebollín con arroz,7000,,800,35,almuerzo|cena,,gluten
+Restaurante Xin Wen Hua,Pollo/Carne Cebollín con papas,8000,,900,34,almuerzo|cena,,gluten
+Restaurante Xin Wen Hua,Pollo Champiñón con arroz,7500,,800,36,almuerzo|cena,,gluten
+Restaurante Xin Wen Hua,Pollo Champiñón con papas,8500,,900,35,almuerzo|cena,,gluten
+Restaurante Xin Wen Hua,Carne Champiñón con arroz,7500,,840,38,almuerzo|cena,,gluten
+Restaurante Xin Wen Hua,Carne Champiñón con papas,8500,,940,37,almuerzo|cena,,gluten
+Restaurante Xin Wen Hua,Costillar Cantones con arroz,7800,,950,33,almuerzo|cena,,gluten
+Restaurante Xin Wen Hua,Costillar Cantones con papas,8800,,1050,32,almuerzo|cena,,gluten
+Restaurante Xin Wen Hua,Pollo Solo con arroz,8000,,780,38,almuerzo|cena,,gluten
+Restaurante Xin Wen Hua,Pollo Solo con papas,9000,,880,37,almuerzo|cena,,gluten
+Restaurante Xin Wen Hua,Carne Solo con arroz,8000,,820,40,almuerzo|cena,,gluten
+Restaurante Xin Wen Hua,Carne Solo con papas,9000,,920,39,almuerzo|cena,,gluten
+Xin Chun,Bao Zi (5 u.),6000,,620,20,almuerzo|cena,si,gluten
+Xin Chun,Sopa I Fu Min,6000,,380,22,almuerzo|cena,,gluten|marisco
+Xin Chun,Sopa Wantán,6000,,320,18,almuerzo|cena,,gluten
+Xin Chun,Sopa Hanchow,6000,,300,18,almuerzo|cena,,gluten
+Xin Chun,Sopa Marisco,6000,,310,26,almuerzo|cena,,marisco
+Xin Chun,Sopa Wantán Camarón,6000,,340,22,almuerzo|cena,,gluten|marisco
+Xin Chun,Gyosas (8 u.),6000,,480,20,almuerzo|cena,,gluten
+Xin Chun,Arroz Chaufán,2800,vegetariano,480,10,almuerzo|cena,,gluten
+Xin Chun,Arroz Chino Especial,7500,,720,32,almuerzo|cena,,gluten|marisco
+Xin Chun,Arroz Blanco,2600,vegano,350,7,almuerzo|cena,,ninguno
+Xin Chun,Arroz Grande,4000,vegano,350,7,almuerzo|cena,si,ninguno
+Xin Chun,Chapsui de Carne,8000,,480,32,almuerzo|cena,,gluten
+Xin Chun,Chapsui de Ave,8000,,450,34,almuerzo|cena,,gluten
+Xin Chun,Chapsui de Cerdo,8000,,510,30,almuerzo|cena,,gluten
+Xin Chun,Chapsui de Verduras,8000,vegano,280,10,almuerzo|cena,,gluten
+Xin Chun,Chapsui de Bambú,8000,vegano,290,10,almuerzo|cena,,gluten
+Xin Chun,Bambú con Algas,8000,vegano,260,9,almuerzo|cena,,gluten
+Xin Chun,Chapsui de Camarones,12500,,420,30,almuerzo|cena,,gluten|marisco
+Xin Chun,Chapsui Especial,10500,,520,35,almuerzo|cena,,gluten|marisco
+Xin Chun,Parrillada China,12000,,850,55,almuerzo|cena,,gluten|marisco
+Xin Chun,Plancha Especial,12000,,620,42,almuerzo|cena,,gluten
+Xin Chun,Plancha Carne,10500,,580,40,almuerzo|cena,,gluten
+Xin Chun,Plancha Pollo,10500,,540,42,almuerzo|cena,,gluten
+Xin Chun,Plancha Camrones,15600,,510,38,almuerzo|cena,,gluten|marisco
+Xin Chun,Pollo Camarones,9000,,560,40,almuerzo|cena,,gluten|marisco
+Xin Chun,Pollo Pekin,9100,,640,42,almuerzo|cena,,gluten
+Xin Chun,Pollo a la China,9000,,540,38,almuerzo|cena,,gluten
+Xin Chun,Pollo con Champiñones,9000,,530,38,almuerzo|cena,,gluten
+Xin Chun,Pollo Tausi,9000,,560,38,almuerzo|cena,,gluten
+Xin Chun,Pollo Mongoliano,8900,,620,40,almuerzo|cena,,gluten
+Xin Chun,Pollo Chiten,8800,,520,35,almuerzo|cena,,gluten
+Xin Chun,Pollo con Piña,9100,,720,36,almuerzo|cena,,gluten
+Xin Chun,Pollo Solo,9800,,680,48,almuerzo|cena,,gluten
+Xin Chun,Cerdo Tausi,8900,,620,36,almuerzo|cena,,gluten
+Xin Chun,Cerdo Mongoliano,8900,,650,38,almuerzo|cena,,gluten
+Xin Chun,Costillar Cantonés,9100,,790,36,almuerzo|cena,,gluten
+Xin Chun,Carne a la China,9300,,580,40,almuerzo|cena,,gluten
+Xin Chun,Carne con Champiñones,9300,,570,40,almuerzo|cena,,gluten
+Xin Chun,Carne Mongoliana,9100,,640,42,almuerzo|cena,,gluten
+Xin Chun,Carne Sola,10100,,680,48,almuerzo|cena,,gluten
+Xin Chun,Diente de Dragón con Carne,8000,,460,32,almuerzo|cena,,gluten
+Xin Chun,Diente de Dragón con Pollo,8000,,430,34,almuerzo|cena,,gluten
+Xin Chun,Diente de Dragón con Camarones,10900,,400,30,almuerzo|cena,,gluten|marisco
+Xin Chun,Diente de Dragón Especial,8000,,490,34,almuerzo|cena,,gluten|marisco
+Xin Chun,Cerdo Chaumin,8500,,720,32,almuerzo|cena,,gluten
+Xin Chun,Carne Chaumin,8500,,700,34,almuerzo|cena,,gluten
+Xin Chun,Pollo Chaumin,8500,,680,34,almuerzo|cena,,gluten
+Xin Chun,Camarón Chaumin,12000,,650,32,almuerzo|cena,,gluten|marisco
+Xin Chun,Chaumin Especial,10000,,740,38,almuerzo|cena,,gluten|marisco
+Xin Chun,Chaumin Solo,7000,vegano,540,14,almuerzo|cena,,gluten
+Achoclonados,Choclo Armalo Como Tu Quieras 220 gr,3590,,420,14,almuerzo|cena,,
+Achoclonados,Choclo Armalo Como Tu Quieras 330 gr,4290,,600,20,almuerzo|cena,,
+Achoclonados,Choclo Champiñón,3590,vegetariano,390,9,almuerzo|cena,,ninguno
+Achoclonados,Choclo Mechado,3590,,540,26,almuerzo|cena,,ninguno
+Achoclonados,Choclo Teriyaki,3590,,530,24,almuerzo|cena,,gluten|lactosa
+Achoclonados,Choclo Pollo Mechado,3590,,490,26,almuerzo|cena,,lactosa
+Achoclonados,Choclo con Mantequilla o Mayonesa,1490,vegetariano,340,7,almuerzo|cena,,lactosa
+Achoclonados,Choclo con Mantequilla y Parmesano,1990,vegetariano,410,11,almuerzo|cena,,lactosa
+Burga,Veggie Simple,5700,vegetariano,490,16,almuerzo|cena,,gluten|lactosa
+Burga,Veggie Doble,6700,vegetariano,680,26,almuerzo|cena,,gluten|lactosa
+Hot Pancho's,Pollo Asado Entero,8490,,450,42,almuerzo|cena,si,ninguno
+Hot Pancho's,1/2 Pollo Asado,4990,,450,42,almuerzo|cena,si,ninguno
+Hot Pancho's,1/4 Pollo Asado + Papas Fritas o Arroz + Lata,3990,,850,45,almuerzo|cena,,ninguno
+Wan Shi Fa,Chaumín Carne o Pollo,7000,,700,32,almuerzo|cena,,gluten
+Wan Shi Fa,Carne o Pollo Mongoliano con Arroz Chaufán,7000,,780,38,almuerzo|cena,,gluten
+Wan Shi Fa,Carne o Pollo Mongoliano con Papas Fritas,7600,,860,36,almuerzo|cena,,gluten
+Wan Shi Fa,Chancho Mongoliano con Arroz Chaufán,7000,,810,36,almuerzo|cena,,gluten
+Wan Shi Fa,Chancho Mongoliano con Papas Fritas,7600,,890,34,almuerzo|cena,,gluten
+Wan Shi Fa,Chapsui Pollo o Carne con Arroz Chaufán,7000,,680,34,almuerzo|cena,,gluten
+Wan Shi Fa,Chapsui Pollo o Carne con Papas Fritas,7600,,760,32,almuerzo|cena,,gluten
+Wan Shi Fa,Diente Dragón Carne o Pollo con Arroz Chaufán,7000,,660,34,almuerzo|cena,,gluten
+Wan Shi Fa,Diente Dragón Carne o Pollo con Papas Fritas,7600,,740,32,almuerzo|cena,,gluten
+Wan Shi Fa,Diente Dragón Camarón con Arroz Chaufán,8000,,620,30,almuerzo|cena,,gluten|marisco
+Wan Shi Fa,Diente Dragón Camarón con Papas Fritas,9000,,700,28,almuerzo|cena,,gluten|marisco
+Wan Shi Fa,Chapsui Especial con Arroz Chaufán,8000,,720,36,almuerzo|cena,,gluten|marisco
+Wan Shi Fa,Chapsui Especial con Papas Fritas,9000,,800,34,almuerzo|cena,,gluten|marisco
+Wan Shi Fa,Chapsui Camarón con Arroz Chaufán,8000,,640,30,almuerzo|cena,,gluten|marisco
+Wan Shi Fa,Chapsui Camarón con Papas Fritas,9000,,720,28,almuerzo|cena,,gluten|marisco
+Wan Shi Fa,Chapsui de Verduras con Arroz Chaufán,7000,vegetariano,540,12,almuerzo|cena,,gluten
+Wan Shi Fa,Chapsui de Verduras con Papas Fritas,7600,vegano,620,10,almuerzo|cena,,gluten
+Wan Shi Fa,Carne o Pollo Champiñón con Arroz Chaufán,8000,,720,38,almuerzo|cena,,gluten
+Wan Shi Fa,Carne o Pollo Champiñón con Papas Fritas,9000,,800,36,almuerzo|cena,,gluten
+Wan Shi Fa,Carne o Pollo Solo con Arroz Chaufán,8200,,820,46,almuerzo|cena,,gluten
+Wan Shi Fa,Carne o Pollo Solo con Papas Fritas,8700,,900,44,almuerzo|cena,,gluten
+Wan Shi Fa,Pollo Piña con Arroz Chaufán,7200,,860,36,almuerzo|cena,,gluten
+Wan Shi Fa,Pollo Piña con Papas Fritas,7500,,940,34,almuerzo|cena,,gluten
+Wan Shi Fa,Costillar Cantonés con Arroz Chaufán,7200,,920,36,almuerzo|cena,,gluten
+Wan Shi Fa,Costillar Cantonés con Papas Fritas,7500,,1000,34,almuerzo|cena,,gluten
+Trujillo,Pescado Frito con 2 Agregados y Ensalada,9500,,820,42,almuerzo|cena,,gluten
+Trujillo,Lomo Saltado con 2 Agregados y Ensalada,9500,,850,42,almuerzo|cena,,gluten
+Trujillo,Tallarín Saltado con 2 Agregados y Ensalada,9500,,880,38,almuerzo|cena,,gluten
+Trujillo,Pollo a lo Pobre con 2 Agregados y Ensalada,9500,,980,48,almuerzo|cena,,ninguno
+Trujillo,Bistec a lo Pobre con 2 Agregados y Ensalada,9500,,1020,50,almuerzo|cena,,ninguno
+Trujillo,Pollada Peruana con 2 Agregados y Ensalada,9500,,860,46,almuerzo|cena,,ninguno
+Trujillo,Pollo Asado (Para Llevar),7500,,680,44,almuerzo|cena,,ninguno
+Trujillo,Bistec al Plato (Para Llevar),7500,,650,42,almuerzo|cena,,ninguno
+Trujillo,Pescado Frito (Para Llevar),7500,,700,38,almuerzo|cena,,gluten
+Trujillo,Costillar al Horno,5000,,820,44,almuerzo|cena,,ninguno
+Trujillo,Bisteck a lo Pobre,5000,,890,46,almuerzo|cena,,ninguno
+Trujillo,Pechuga a la Plancha,5000,,560,44,almuerzo|cena,,ninguno
+Trujillo,Pollada Peruana,5000,,740,42,almuerzo|cena,,ninguno
+Trujillo,Pescado Frito,5000,,700,38,almuerzo|cena,,gluten
+Trujillo,Parrilla de Pollo,7000,,780,48,almuerzo|cena,,ninguno
+Trujillo,Parrilla de Vacuno,7000,,840,50,almuerzo|cena,,ninguno
+Trujillo,Atún a la Plancha,7000,,620,46,almuerzo|cena,,ninguno
+Trujillo,Tilapia a la Plancha,7000,,580,42,almuerzo|cena,,ninguno
+Trujillo,Albacora a la Plancha,7000,,640,46,almuerzo|cena,,ninguno
+Restaurant Hong Ta,Arroz Blanco,2600,vegano,350,7,almuerzo|cena,,ninguno
+Restaurant Hong Ta,Arroz Chaufán,2800,,490,13,almuerzo|cena,,gluten
+Restaurant Hong Ta,Arroz Chaufán Grande,5500,,490,13,almuerzo|cena,si,gluten
+Restaurant Hong Ta,Arroz Chaufán Especial,8800,,740,34,almuerzo|cena,,gluten|marisco
+Restaurant Hong Ta,Carne Chiten,8900,,560,36,almuerzo|cena,,gluten
+Restaurant Hong Ta,Carne Mongoliana,9600,,640,42,almuerzo|cena,,gluten
+Restaurant Hong Ta,Carne y Pollo Mongoliano,9800,,630,41,almuerzo|cena,,gluten
+Restaurant Hong Ta,Carne Champiñones,9900,,570,40,almuerzo|cena,,gluten
+Restaurant Hong Ta,Carne Chung San,9900,,560,40,almuerzo|cena,,gluten
+Restaurant Hong Ta,Carne con Algas,9900,,560,40,almuerzo|cena,,gluten
+Restaurant Hong Ta,Carne con Camarones,13900,,600,44,almuerzo|cena,,gluten|marisco
+Restaurant Hong Ta,Carne Sola,13900,,680,48,almuerzo|cena,,gluten
+Restaurant Hong Ta,Cerdo Mongoliano,9200,,650,38,almuerzo|cena,,gluten
+Restaurant Hong Ta,Cerdo con Algas,9500,,610,36,almuerzo|cena,,gluten
+Restaurant Hong Ta,Cerdo Champiñones,9500,,610,36,almuerzo|cena,,gluten
+Restaurant Hong Ta,Cerdo 5 Sabores,9500,,660,38,almuerzo|cena,,gluten
+Restaurant Hong Ta,Costillar Cantonés,9900,,820,36,almuerzo|cena,,gluten
+Restaurant Hong Ta,Pollo Chiten,8900,,520,35,almuerzo|cena,,gluten
+Restaurant Hong Ta,Pollo Mongoliano,9200,,620,40,almuerzo|cena,,gluten
+Restaurant Hong Ta,Pollo con Camarones,12900,,560,40,almuerzo|cena,,gluten|marisco
+Restaurant Hong Ta,Pollo Piña,9900,,740,36,almuerzo|cena,,gluten
+Restaurant Hong Ta,Pollo Tausi,9500,,560,38,almuerzo|cena,,gluten
+Restaurant Hong Ta,Pollo Champiñones,9500,,530,38,almuerzo|cena,,gluten
+Restaurant Hong Ta,Pollo Chung San,9500,,530,38,almuerzo|cena,,gluten
+Restaurant Hong Ta,Pollo con Algas,9500,,530,38,almuerzo|cena,,gluten
+Restaurant Hong Ta,Pollo Solo,11300,,680,48,almuerzo|cena,,gluten
+Restaurant Hong Ta,Pollo Empaquetado,9900,,640,42,almuerzo|cena,,gluten
+Restaurant Hong Ta,Chaumen de Pollo,9000,,680,34,almuerzo|cena,,gluten
+Restaurant Hong Ta,Chaumen de Carne,9000,,700,34,almuerzo|cena,,gluten
+Restaurant Hong Ta,Chaumen Especial,9900,,740,38,almuerzo|cena,,gluten|marisco
+Restaurant Hong Ta,Chaumen Camarones,11900,,650,32,almuerzo|cena,,gluten|marisco
+Restaurant Hong Ta,Chaumen Verduras,8600,vegano,550,14,almuerzo|cena,,gluten
+Restaurant Hong Ta,Chaumen Solo,8600,vegano,540,14,almuerzo|cena,,gluten
+Restaurant Hong Ta,Camarón Cantonés,16500,,520,34,almuerzo|cena,,gluten|marisco
+Restaurant Hong Ta,Camarón Cebollín,16900,,500,34,almuerzo|cena,,gluten|marisco
+Restaurant Hong Ta,Camarón Fuyón,16900,,640,38,almuerzo|cena,,gluten|marisco
+Restaurant Hong Ta,Parrillada China,16900,,850,55,almuerzo|cena,,gluten|marisco
+Restaurant Hong Ta,Chapsui de Verduras,7800,vegano,280,10,almuerzo|cena,,gluten
+Restaurant Hong Ta,Chapsui Carne,8500,,480,32,almuerzo|cena,,gluten
+Restaurant Hong Ta,Chapsui de Pollo,8500,,450,34,almuerzo|cena,,gluten
+Restaurant Hong Ta,Chapsui de Cerdo,8500,,510,30,almuerzo|cena,,gluten
+Restaurant Hong Ta,Chapsui Carne con Pollo,8800,,470,34,almuerzo|cena,,gluten
+Restaurant Hong Ta,Chapsui Especial,9300,,520,35,almuerzo|cena,,gluten|marisco
+Restaurant Hong Ta,Chapsui de Camarón,11300,,420,30,almuerzo|cena,,gluten|marisco
+Restaurant Hong Ta,Diente de Dragón Solo,7800,vegano,260,10,almuerzo|cena,,gluten
+Restaurant Hong Ta,Diente de Dragón Especial,9300,,490,34,almuerzo|cena,,gluten|marisco
+Restaurant Hong Ta,Diente de Dragón con Carne,8500,,460,32,almuerzo|cena,,gluten
+Restaurant Hong Ta,Diente de Dragón con Pollo,8500,,430,34,almuerzo|cena,,gluten
+Restaurant Hong Ta,Diente de Dragón con Cerdo,8500,,490,30,almuerzo|cena,,gluten
+Restaurant Hong Ta,Diente de Dragón con Camarón,11300,,400,30,almuerzo|cena,,gluten|marisco
+Restaurant Hong Ta,Sopa Wantán,6500,,340,18,almuerzo|cena,,gluten
+Restaurant Hong Ta,Sopa Wantán Min,6500,,420,22,almuerzo|cena,,gluten
+Restaurant Hong Ta,Sopa Kayón,6500,,340,20,almuerzo|cena,,gluten
+Restaurant Hong Ta,Sopa I Fu Min,6500,,440,26,almuerzo|cena,,gluten|marisco
+Restaurant Hong Ta,Piña al Jugo,3800,vegano,180,1,almuerzo|cena,,ninguno
+Restaurant Hong Ta,Duraznos al Jugo,3800,vegano,170,1,almuerzo|cena,,ninguno
+Restaurant Hong Ta,Lychees (Fruta China),4500,vegano,160,1,almuerzo|cena,,ninguno
+Sanguchería Donde el Beto,As mayo,4500,,520,30,almuerzo|cena,,gluten
+Sanguchería Donde el Beto,As tomate mayo,5000,,540,30,almuerzo|cena,,gluten
+Sanguchería Donde el Beto,As palta mayo,5000,,620,31,almuerzo|cena,,gluten
+Sanguchería Donde el Beto,As italiano,5000,,640,31,almuerzo|cena,,gluten
+Sanguchería Donde el Beto,As completo,5000,,610,31,almuerzo|cena,,gluten
+Sanguchería Donde el Beto,As queso,5000,,590,35,almuerzo|cena,,gluten|lactosa
+Sanguchería Donde el Beto,As dinámico,5500,,680,32,almuerzo|cena,,gluten
+Sanguchería Donde el Beto,As chacarero,5500,,610,33,almuerzo|cena,,gluten
+Sanguchería Donde el Beto,As palta + queso (Brasileña),5500,,690,36,almuerzo|cena,,gluten|lactosa
+Sanguchería Donde el Beto,As tomate + queso (Suiza),5500,,610,36,almuerzo|cena,,gluten|lactosa
+Sanguchería Donde el Beto,As tomate + queso + orégano (Napolitana),5500,,610,36,almuerzo|cena,,gluten|lactosa
+Sanguchería Donde el Beto,As tomate + queso,5500,,610,36,almuerzo|cena,,gluten|lactosa
+Sanguchería Donde el Beto,As italiano queso,5500,,720,36,almuerzo|cena,,gluten|lactosa
+Sanguchería Donde el Beto,As queso + choclo,5500,,640,36,almuerzo|cena,,gluten|lactosa
+Sanguchería Donde el Beto,As champiñón + queso,5500,,610,36,almuerzo|cena,,gluten|lactosa
+Sanguchería Donde el Beto,As cebolla frita + queso + tocino (Preferida),5700,,760,40,almuerzo|cena,,gluten|lactosa
+Sanguchería Donde el Beto,As choclo + champiñón + queso,5700,,660,37,almuerzo|cena,,gluten|lactosa
+Sanguchería Donde el Beto,Churrasco mayo,6000,,580,34,almuerzo|cena,,gluten
+Sanguchería Donde el Beto,Churrasco tomate mayo,6500,,600,34,almuerzo|cena,,gluten
+Sanguchería Donde el Beto,Churrasco palta mayo,6500,,680,35,almuerzo|cena,,gluten
+Sanguchería Donde el Beto,Churrasco completo,6500,,670,35,almuerzo|cena,,gluten
+Sanguchería Donde el Beto,Churrasco italiano,6500,,700,35,almuerzo|cena,,gluten
+Sanguchería Donde el Beto,Churrasco clásico (lechuga + tomate),6500,,560,34,almuerzo|cena,,gluten
+Sanguchería Donde el Beto,Churrasco queso (Barros Luco),6500,,650,39,almuerzo|cena,,gluten|lactosa
+Sanguchería Donde el Beto,Churrasco dinámico,7000,,740,36,almuerzo|cena,,gluten
+Sanguchería Donde el Beto,Churrasco chacarero,7000,,670,37,almuerzo|cena,,gluten
+Sanguchería Donde el Beto,Churrasco Chemilico (cebolla huevo),7000,,680,40,almuerzo|cena,,gluten
+Sanguchería Donde el Beto,Churrasco palta + queso (Brasileña),7000,,750,40,almuerzo|cena,,gluten|lactosa
+Sanguchería Donde el Beto,Churrasco tomate + queso (Suiza),7000,,670,40,almuerzo|cena,,gluten|lactosa
+Sanguchería Donde el Beto,Churrasco tomate + queso + orégano (Napolitana),7000,,670,40,almuerzo|cena,,gluten|lactosa
+Sanguchería Donde el Beto,Churrasco italiano queso,7000,,780,40,almuerzo|cena,,gluten|lactosa
+Sanguchería Donde el Beto,Churrasco choclo + queso,7000,,700,40,almuerzo|cena,,gluten|lactosa
+Sanguchería Donde el Beto,Churrasco queso + huevo,7000,,720,45,almuerzo|cena,,gluten|lactosa
+Sanguchería Donde el Beto,Churrasco champiñón + queso,7000,,670,40,almuerzo|cena,,gluten|lactosa
+Sanguchería Donde el Beto,Churrasco dinámica + queso,7700,,820,41,almuerzo|cena,,gluten|lactosa
+Sanguchería Donde el Beto,Churrasco preferida (queso tocino cebolla),7700,,820,44,almuerzo|cena,,gluten|lactosa
+Sanguchería Donde el Beto,Sándwich Vegetariano (5 ingredientes),6500,vegetariano,520,18,desayuno|almuerzo|cena,,gluten|lactosa
+Sanguchería Donde el Beto,Fajita Queso,5500,,560,30,almuerzo|cena,,gluten|lactosa
+Sanguchería Donde el Beto,Fajita Palta,5500,,580,26,almuerzo|cena,,gluten
+Sanguchería Donde el Beto,Fajita Tomate,5500,,500,25,almuerzo|cena,,gluten
+Sanguchería Donde el Beto,Fajita Choclo + queso,6000,,610,31,almuerzo|cena,,gluten|lactosa
+Sanguchería Donde el Beto,Fajita Palta + queso (Brasileña),6000,,640,31,almuerzo|cena,,gluten|lactosa
+Sanguchería Donde el Beto,Fajita Clásica (lechuga + tomate),6000,,520,25,almuerzo|cena,,gluten
+Sanguchería Donde el Beto,Fajita Italiana,6000,,650,26,almuerzo|cena,,gluten
+Sanguchería Donde el Beto,Fajita Completo,6500,,620,26,almuerzo|cena,,gluten
+Sanguchería Donde el Beto,Fajita Chacarera,6500,,620,28,almuerzo|cena,,gluten
+Sanguchería Donde el Beto,Fajita Palta + tocino + choclo,6500,,720,32,almuerzo|cena,,gluten
+Sanguchería Donde el Beto,Fajita Dinámica,6700,,690,27,almuerzo|cena,,gluten
+Sanguchería Donde el Beto,"Fajita Lechuga, queso, tocino, pimentón",6700,,660,33,almuerzo|cena,,gluten|lactosa
+Sanguchería Donde el Beto,Fajita Preferida (tocino cebolla queso),6700,,740,35,almuerzo|cena,,gluten|lactosa
+Sanguchería Donde el Beto,Fajita Vegetariana (5 ingredientes),6000,vegetariano,520,16,desayuno|almuerzo|cena,,gluten|lactosa
+Mariano's,Sándwich Solo (Churrasco/Lomito/Pollo/Mechada),3300,,480,32,almuerzo|cena,,gluten
+Mariano's,Sándwich Tomate Mayo (Churrasco/Lomito/Pollo/Mechada),3800,,560,33,almuerzo|cena,,gluten
+Mariano's,Sándwich Tradicional (Churrasco/Lomito/Pollo/Mechada),3900,,580,33,almuerzo|cena,,gluten
+Mariano's,Sándwich Italiano (Churrasco/Lomito/Pollo/Mechada),4200,,660,34,almuerzo|cena,,gluten
+Mariano's,Sándwich Chacarero (Churrasco/Lomito/Pollo/Mechada),4200,,600,36,almuerzo|cena,,gluten
+Mariano's,Sándwich A Lo Pobre (Churrasco/Lomito/Pollo/Mechada),4200,,740,42,almuerzo|cena,,gluten|lactosa
+Mariano's,Sándwich Barros Luco (Churrasco/Lomito/Pollo/Mechada),4200,,680,42,almuerzo|cena,,gluten|lactosa
+Mariano's,Sándwich Barros Luco Patrón (Churrasco/Lomito/Pollo/Mechada),4300,,720,40,almuerzo|cena,,gluten|lactosa
+Mariano's,Sándwich Diplomático (Churrasco/Lomito/Pollo/Mechada),4200,,660,42,almuerzo|cena,,gluten|lactosa
+Mariano's,Sándwich Irlandés (Churrasco/Lomito/Pollo/Mechada),4300,,640,38,almuerzo|cena,,gluten|lactosa
+Mariano's,Sándwich Pimentón (Churrasco/Lomito/Pollo/Mechada),4200,,630,38,almuerzo|cena,,gluten|lactosa
+Mariano's,Sándwich Dinámico (Churrasco/Lomito/Pollo/Mechada),4400,,680,34,almuerzo|cena,,gluten
+Mariano's,Sándwich Mariano's,4500,vegetariano,560,18,desayuno|almuerzo|cena,,gluten|lactosa
+Mariano's,Sándwich Grosso Mariano's,5400,vegetariano,680,24,desayuno|almuerzo|cena,,gluten|lactosa
+Mariano's,As Solo,2500,,440,28,almuerzo|cena,,gluten
+Mariano's,As Tomate Mayo,2700,,520,29,almuerzo|cena,,gluten
+Mariano's,As Tradicional,2700,,540,29,almuerzo|cena,,gluten
+Mariano's,As Italiano,2800,,620,30,almuerzo|cena,,gluten
+Mariano's,As Dinámico,2900,,640,30,almuerzo|cena,,gluten
+Mariano's,As Queso,2800,,570,33,almuerzo|cena,,gluten|lactosa
+Mariano's,As Chacarero,2800,,560,32,almuerzo|cena,,gluten
+Mariano's,Churrasco al Plato,4000,,620,36,almuerzo|cena,,ninguno
+Mariano's,Churrasco a lo Pobre al Plato,4500,,890,46,almuerzo|cena,,ninguno

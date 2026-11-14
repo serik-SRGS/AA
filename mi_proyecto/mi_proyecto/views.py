@@ -1,6 +1,9 @@
+import csv
+import io
 import itertools
 import json
 import re
+import time
 import urllib.parse
 import urllib.request
 from pathlib import Path
@@ -8,157 +11,41 @@ from pathlib import Path
 from django.http import JsonResponse
 from django.shortcuts import render
 
-CACHE_OSM = Path(__file__).resolve().parent / 'osmcache.json'
-CAMPUS = (-33.4985, -70.6165)  
-RADIO_M = 1500                  
-
+BASE = Path(__file__).resolve().parent
+CSV_LOCALES = BASE / 'locales.csv'
+CSV_MENUS = BASE / 'menus.csv'
+CACHE_GEO = BASE / 'geocache.json'
+VIEWBOX = "-70.75,-33.40,-70.50,-33.60"   # zona amplia de Santiago
 MOMENTOS = ("desayuno", "almuerzo", "cena")
 
 
-def _p(nombre, precio, tipo, kcal=None, prot=None, momento=("almuerzo", "cena"), compartir=False):
-    """Un plato. kcal/prot son por porción individual; None = sin dato.
-    compartir=True: el precio es de un formato para varias personas (no entra al menú diario)."""
-    return {"nombre": nombre, "precio": precio, "tipo": tipo, "kcal": kcal, "prot": prot,
-            "momento": list(momento), "compartir": compartir}
-
-
-# OJO: los valores de kcal y prot (proteínas en gramos) son ESTIMACIONES REFERENCIALES del equipo,
-# no mediciones oficiales. Verifíquenlos (tablas nutricionales del local u Open Food Facts) antes
-# de presentar, y si no pueden, díganlo en la presentación.
-MENUS = {
-    "littlecaesars": {"cat": "Pizzería", "alergenos": ["gluten", "lactosa"], "platos": [
-        _p("Familiar Queso", 5500, "vegetariano", compartir=True),
-        _p("Familiar Pepperoni", 5500, "", compartir=True),
-        _p("Italian 3 Cheese", 6500, "vegetariano", compartir=True),
-        _p("Extra Pepperoni", 7000, "", compartir=True),
-        _p("Familiar Jamón", 8500, "", compartir=True),
-        _p("Familiar Super Cheese", 9500, "", compartir=True),
-        _p("Familiar Veggie", 9500, "vegetariano", compartir=True),
-        _p("Familiar Ultimate Supreme", 10000, "", compartir=True),
-        _p("Familiar 3 Meat Treat", 10000, "", compartir=True)]},
-    "subway": {"cat": "Sándwiches", "alergenos": ["gluten"], "platos": [
-        _p("Sub Vegetariano 15cm", 3200, "vegetariano", 230, 9)]},
-    "doggis": {"cat": "Comida rápida", "alergenos": ["gluten", "lactosa"], "platos": [
-        _p("Empanadas de Queso x3", 2500, "vegetariano", 750, 25)]},
-    "starbucks": {"cat": "Cafetería", "alergenos": ["gluten"], "platos": [
-        _p("Muffin Vegano de Arándanos", 3100, "vegano", 380, 5, ("desayuno",))]},
-    "mcdonald": {"cat": "Comida rápida", "alergenos": [], "platos": [
-        _p("McPapas Medianas + Ensalada Verde", 2900, "vegano", 380, 5)]},
-    "pedrojuan": {"cat": "Comida rápida", "alergenos": [], "platos": [
-        _p("Papas Fritas Familiar con Salsa Ajo", 3400, "vegetariano", compartir=True)]},
-    "elfito": {"cat": "Restaurante", "alergenos": ["lactosa"], "platos": [
-        _p("Plato Ejecutivo Vegetariano del Día", 3800, "vegetariano", 650, 20, ("almuerzo",))]},
-}
-
-# Locales SIN CONFIRMAR: no se usan en la app. Si verifican que existen (y sus platos/precios),
-# muévanlos arriba a MENUS (usando _p(...) y con kcal/prot/momento) y agréguenlos a UBICACIONES.
-POR_VERIFICAR = {
-    "donerkebab": {"cat": "Kebab", "alergenos": ["gluten"], "platos": [
-        {"nombre": "Wrap de Falafel con Salsa de Sésamo", "precio": 3900, "tipo": "vegano"}]},
-    "pamefood": {"cat": "Ensaladas", "alergenos": [], "platos": [
-        {"nombre": "Ensalada Completa de Quínoa y Palta", "precio": 3600, "tipo": "vegano"}]},
-    "bicicleta": {"cat": "Restaurante", "alergenos": [], "platos": [
-        {"nombre": "Tabla Vegana de Hummus y Verduras", "precio": 4800, "tipo": "vegano"}]},
-    "piccola": {"cat": "Restaurante italiano", "alergenos": ["gluten"], "platos": [
-        {"nombre": "Minestrone de Verduras Frescas", "precio": 4200, "tipo": "vegetariano"}]},
-    "mardoqueo": {"cat": "Fuente de soda", "alergenos": [], "platos": [
-        {"nombre": "Papas Fritas Grandes + Bebida", "precio": 4000, "tipo": "vegano"}]},
-    "dgustar": {"cat": "Pastelería", "alergenos": ["mani"], "platos": [
-        {"nombre": "Tarta de Avena y Frutas Sin Lactosa", "precio": 2900, "tipo": "sin_gluten"}]},
-}
-
-# Locales que están en MENUS pero NO en OpenStreetMap (osmcache.json).
-# Para que aparezcan en el mapa, completen lat y lon de cada uno:
-#   Google Maps -> clic derecho sobre el local -> clic en las coordenadas (se copian).
-# Mientras lat/lon estén en None, el local NO se muestra (es lo que pasaba antes).
-UBICACIONES = {
-    "doggis":     {"nombre": "Doggis",              "direccion": "Cerca del campus", "lat": -33.48662815087975, "lon": -70.61639128417969},
-    "mcdonald":   {"nombre": "McDonald's",          "direccion": "Cerca del campus", "lat": -33.508703795950304, "lon": -70.61639128417969},
-    "pedrojuan":  {"nombre": "Pedro, Juan y Diego", "direccion": "Cerca del campus", "lat": -33.516321810109865, "lon": -70.59782797343966},
-}
-
-
 def _normal(s):
-    s = s.lower()
+    s = (s or '').lower()
     for a, b in zip("áéíóúüñ", "aeiouun"):
         s = s.replace(a, b)
     return re.sub(r'[^a-z0-9]', '', s)
+
+
+def _num(s):
+    s = (s or '').strip().replace(',', '.')
+    if not s:
+        return None
+    try:
+        return float(s)
+    except ValueError:
+        return None
 
 
 def _precio(p):
     return "$" + f"{p:,}".replace(",", ".")
 
 
-def obtener_cercanos():
-    if CACHE_OSM.exists():
-        return json.loads(CACHE_OSM.read_text(encoding='utf-8'))
-    lat, lon = CAMPUS
-    consulta = f"""
-    [out:json][timeout:25];
-    (
-      node["amenity"~"^(restaurant|cafe|fast_food|food_court)$"](around:{RADIO_M},{lat},{lon});
-      way["amenity"~"^(restaurant|cafe|fast_food|food_court)$"](around:{RADIO_M},{lat},{lon});
-    );
-    out center tags;
-    """
-    try:
-        req = urllib.request.Request(
-            "https://overpass-api.de/api/interpreter",
-            data=urllib.parse.urlencode({"data": consulta}).encode(),
-            headers={"User-Agent": "geofit-proyecto-universitario"},
-        )
-        with urllib.request.urlopen(req, timeout=40) as r:
-            elementos = json.load(r).get("elements", [])
-    except Exception:
-        return []  
-
-    lugares, vistos = [], set()
-    for el in elementos:
-        tags = el.get("tags", {})
-        nombre = tags.get("name")
-        if not nombre:
-            continue
-        punto = (el.get("lat"), el.get("lon")) if el["type"] == "node" else (
-            el.get("center", {}).get("lat"), el.get("center", {}).get("lon"))
-        if punto[0] is None:
-            continue
-        clave = (nombre.lower(), round(punto[0], 4), round(punto[1], 4))
-        if clave in vistos:
-            continue
-        vistos.add(clave)
-        lugares.append({
-            "id": 1000 + len(lugares), "lugar": nombre,
-            "direccion": f"{tags.get('addr:street', '')} {tags.get('addr:housenumber', '')}".strip() or "Cerca del campus",
-            "lat": round(punto[0], 6), "lon": round(punto[1], 6),
-        })
-    CACHE_OSM.write_text(json.dumps(lugares, ensure_ascii=False, indent=2), encoding='utf-8')
-    return lugares
+def _lista(valor):
+    return [x.strip().lower() for x in (valor or '').split('|') if x.strip()]
 
 
-def obtener_locales():
-    """Locales de OpenStreetMap + los de UBICACIONES que tengan coordenadas."""
-    lugares = list(obtener_cercanos())
-    nombres = [_normal(l['lugar']) for l in lugares]
-    for i, (clave, u) in enumerate(UBICACIONES.items()):
-        if u['lat'] is None or u['lon'] is None:
-            continue  # sin coordenadas no se puede dibujar
-        if any(clave in n for n in nombres):
-            continue  # ya vino desde OpenStreetMap
-        lugares.append({"id": 2000 + i, "lugar": u['nombre'],
-                        "direccion": u['direccion'], "lat": u['lat'], "lon": u['lon']})
-    return lugares
-
-
-def _menu_de(nombre):
-    n = _normal(nombre)
-    for clave, menu in MENUS.items():
-        if clave in n:
-            return menu
-    return None
-
-
-def index(request):
-    return render(request, 'index.html')
+def _lista_param(valor):
+    return [a.strip().lower() for a in (valor or '').split(',') if a.strip()]
 
 
 def _entero(valor, defecto):
@@ -168,48 +55,157 @@ def _entero(valor, defecto):
         return defecto
 
 
-def _cumple_tipo(menu, plato, tipo):
+def _leer_csv(ruta):
+    if not ruta.exists():
+        return []
+    texto = ruta.read_text(encoding='utf-8-sig')
+    if not texto.strip():
+        return []
+    primera = texto.splitlines()[0]
+    delim = ';' if primera.count(';') > primera.count(',') else ','
+    filas = []
+    for row in csv.DictReader(io.StringIO(texto), delimiter=delim):
+        filas.append({(k or '').strip().lower(): (v or '').strip()
+                      for k, v in row.items() if k is not None and isinstance(v, str)})
+    return filas
+
+
+def _coords_fila(row):
+    lat, lon = _num(row.get('lat')), _num(row.get('lon'))
+    if lat is None and lon is None:
+        # permite pegar "-33.49, -70.61" completo en la columna lat
+        partes = re.findall(r'-?\d+\.\d+', row.get('lat') or '')
+        if len(partes) == 2:
+            lat, lon = float(partes[0]), float(partes[1])
+    return lat, lon
+
+
+def cargar_menus():
+    """menus.csv -> {nombre normalizado del local: [platos]}"""
+    menus = {}
+    for row in _leer_csv(CSV_MENUS):
+        local, plato, precio = row.get('local'), row.get('plato'), _num(row.get('precio'))
+        if not local or not plato or precio is None:
+            continue
+        cal, prot = _num(row.get('kcal')), _num(row.get('prot'))
+        al = (row.get('alergenos') or '').lower()
+        # vacío = alérgenos NO declarados; "ninguno" = declarado sin alérgenos
+        alergenos = None if not al else ([] if al in ('ninguno', 'ninguna', 'no') else _lista(al))
+        momento = [m for m in _lista(row.get('momento')) if m in MOMENTOS] or ['almuerzo', 'cena']
+        menus.setdefault(_normal(local), []).append({
+            'nombre': plato, 'precio': int(precio), 'tipo': (row.get('tipo') or '').lower(),
+            'kcal': int(cal) if cal is not None else None, 'prot': prot,
+            'momento': momento,
+            'compartir': (row.get('compartir') or '').lower() in ('si', 'sí', '1', 'true', 'x', 'yes'),
+            'alergenos': alergenos,
+        })
+    return menus
+
+
+# ---------- Si una sucursal no trae lat/lon se busca por dirección (se guarda en caché) ----------
+def _nominatim(q):
+    params = urllib.parse.urlencode({
+        "q": q + ", Santiago, Chile", "format": "json", "limit": 1,
+        "viewbox": VIEWBOX, "bounded": 1,
+    })
+    req = urllib.request.Request(
+        "https://nominatim.openstreetmap.org/search?" + params,
+        headers={"User-Agent": "geofit-proyecto-universitario"},
+    )
+    with urllib.request.urlopen(req, timeout=15) as r:
+        datos = json.load(r)
+    time.sleep(1.1)
+    if datos:
+        return [round(float(datos[0]["lat"]), 6), round(float(datos[0]["lon"]), 6)]
+    return None
+
+
+def completar_coordenadas(locales):
+    cache = json.loads(CACHE_GEO.read_text(encoding='utf-8')) if CACHE_GEO.exists() else {}
+    cambio = False
+    for e in locales:
+        if e['lat'] is not None or not e['direccion'] or _normal(e['direccion']) == 'cercadelcampus':
+            continue
+        clave = _normal(e['lugar']) + '|' + _normal(e['direccion'])
+        if clave not in cache:
+            try:
+                cache[clave] = _nominatim(f"{e['lugar']}, {e['direccion']}") or _nominatim(e['direccion'])
+            except Exception:
+                continue  # error de red: se reintenta la próxima vez
+            cambio = True
+        if cache.get(clave):
+            e['lat'], e['lon'] = cache[clave]
+    if cambio:
+        CACHE_GEO.write_text(json.dumps(cache, ensure_ascii=False, indent=2), encoding='utf-8')
+
+
+def cargar_locales():
+    menus = cargar_menus()
+    locales = []
+    for row in _leer_csv(CSV_LOCALES):
+        local = row.get('local')
+        if not local or _normal(local) not in menus:
+            continue  # sin menú cargado no se muestra
+        lat, lon = _coords_fila(row)
+        locales.append({
+            'lugar': local, 'categoria': row.get('categoria') or 'Comida',
+            'direccion': row.get('direccion', ''), 'lat': lat, 'lon': lon,
+            'platos': menus[_normal(local)],
+        })
+    completar_coordenadas(locales)
+    locales = [e for e in locales if e['lat'] is not None and e['lon'] is not None]
+    for i, e in enumerate(locales, start=1):
+        e['id'] = i
+    return locales
+
+
+def _cumple_tipo(p, tipo):
     if not tipo:
         return True
-    if tipo == 'sin_gluten':  # el local no declara gluten entre sus alérgenos
-        return 'gluten' not in menu['alergenos']
-    return plato['tipo'] == tipo
+    if tipo == 'vegetariano':
+        return p['tipo'] in ('vegetariano', 'vegano')
+    return p['tipo'] == tipo   # vegano y sin_gluten: solo si el plato está marcado así
 
 
-def _platos_filtrados(menu, presupuesto, tipo, alergeno, momento):
-    """Platos de un local que cumplen presupuesto, dieta, alérgeno y momento del día."""
-    if alergeno and alergeno in menu['alergenos']:
-        return []
-    return [p for p in menu['platos']
-            if p['precio'] <= presupuesto
-            and _cumple_tipo(menu, p, tipo)
-            and (not momento or momento in p['momento'])]
+def _platos_filtrados(e, presupuesto, tipo, alergenos, momento):
+    res = []
+    for p in e['platos']:
+        if p['precio'] > presupuesto or not _cumple_tipo(p, tipo):
+            continue
+        # sin alérgenos declarados no se puede garantizar que el plato sea seguro
+        if alergenos and (p['alergenos'] is None or any(a in p['alergenos'] for a in alergenos)):
+            continue
+        if momento and momento not in p['momento']:
+            continue
+        res.append(p)
+    return res
+
+
+def index(request):
+    return render(request, 'index.html')
 
 
 def buscar_alternativas(request):
     presupuesto_max = _entero(request.GET.get('presupuesto', 10000), 10000)
     tipo_filtro = request.GET.get('tipo', '').strip().lower()
-    alergeno_filtro = request.GET.get('alergeno', '').strip().lower()
+    alergeno_filtro = _lista_param(request.GET.get('alergeno', ''))
     momento_filtro = request.GET.get('momento', '').strip().lower()
 
     resultados = []
-    for item in obtener_locales():
-        menu = _menu_de(item['lugar'])
-        if not menu:
-            continue  # sin menú y precio cargados no se muestra
-        platos = _platos_filtrados(menu, presupuesto_max, tipo_filtro, alergeno_filtro, momento_filtro)
+    for e in cargar_locales():
+        platos = _platos_filtrados(e, presupuesto_max, tipo_filtro, alergeno_filtro, momento_filtro)
         if not platos:
             continue
         platos.sort(key=lambda p: p['precio'])
-        con_dato = next((p for p in platos if p['kcal'] is not None), None)
+        con_dato = next((p for p in platos if p['kcal'] is not None and p['prot'] is not None), None)
 
         resultados.append({
-            'id': item['id'], 'lugar': item['lugar'], 'direccion': item['direccion'],
-            'latitud': item['lat'], 'longitud': item['lon'],
-            'plato': " · ".join(f"{p['nombre']} {_precio(p['precio'])}" for p in platos[:3]),
+            'id': e['id'], 'lugar': e['lugar'], 'direccion': e['direccion'] or 'Ver mapa',
+            'latitud': e['lat'], 'longitud': e['lon'],
+            'plato': " · ".join(f"{p['nombre']} {_precio(p['precio'])}" for p in platos),
             'platos': [{'nombre': p['nombre'], 'precio': p['precio'], 'kcal': p['kcal'],
-                        'prot': p['prot'], 'compartir': p['compartir']} for p in platos[:3]],
-            'precio': platos[0]['precio'], 'tipo_alimentacion': menu['cat'],
+                        'prot': p['prot'], 'compartir': p['compartir']} for p in platos],
+            'precio': platos[0]['precio'], 'tipo_alimentacion': e['categoria'],
             'info_nutricional': ({'calorias': con_dato['kcal'], 'proteinas': con_dato['prot']}
                                  if con_dato else None),
         })
@@ -218,31 +214,33 @@ def buscar_alternativas(request):
 
 
 def menu_diario(request):
-    """Calculadora de menú diario: elige un plato para desayuno, almuerzo y cena que cumpla
-    presupuesto y dieta, y que deje las calorías totales lo más cerca posible del objetivo."""
+    """Elige un plato para desayuno, almuerzo y cena que cumpla presupuesto y dieta,
+    dejando las calorías totales lo más cerca posible del objetivo."""
     presupuesto = _entero(request.GET.get('presupuesto', 10000), 10000)
     objetivo = _entero(request.GET.get('kcal', 2000), 2000)
     tipo = request.GET.get('tipo', '').strip().lower()
-    alergeno = request.GET.get('alergeno', '').strip().lower()
+    alergeno = _lista_param(request.GET.get('alergeno', ''))
 
     candidatos = {m: [] for m in MOMENTOS}
-    for item in obtener_locales():
-        menu = _menu_de(item['lugar'])
-        if not menu:
-            continue
-        for p in _platos_filtrados(menu, presupuesto, tipo, alergeno, ''):
+    for e in cargar_locales():
+        for p in _platos_filtrados(e, presupuesto, tipo, alergeno, ''):
             if p['compartir'] or p['kcal'] is None:
                 continue  # sin porción individual o sin dato nutricional no se puede sumar
             for m in p['momento']:
-                if m in candidatos:
-                    candidatos[m].append({
-                        'lugar': item['lugar'], 'direccion': item['direccion'],
-                        'plato': p['nombre'], 'precio': p['precio'], 'kcal': p['kcal'], 'prot': p['prot']})
+                candidatos[m].append({
+                    'lugar': e['lugar'], 'direccion': e['direccion'], 'plato': p['nombre'],
+                    'precio': p['precio'], 'kcal': p['kcal'], 'prot': p['prot']})
+
+    # con muchos locales se limita la búsqueda para que siga siendo rápida
+    for m in MOMENTOS:
+        c = sorted(candidatos[m], key=lambda x: x['kcal'])
+        if len(c) > 40:
+            paso = len(c) / 40
+            c = [c[int(i * paso)] for i in range(40)]
+        candidatos[m] = c
 
     disponibles = [m for m in MOMENTOS if candidatos[m]]
     faltan = [m for m in MOMENTOS if not candidatos[m]]
-
-    # presupuesto mínimo para armar el día: el plato más barato de cada momento disponible
     minimo = sum(min(c['precio'] for c in candidatos[m]) for m in disponibles)
 
     mejor = None
@@ -252,7 +250,7 @@ def menu_diario(request):
             if precio > presupuesto:
                 continue
             kcal = sum(c['kcal'] for c in combo)
-            repetidos = len(combo) - len({c['plato'] for c in combo})  # prefiere platos distintos
+            repetidos = len(combo) - len({c['plato'] for c in combo})
             clave = (repetidos, abs(objetivo - kcal), precio)
             if mejor is None or clave < mejor[0]:
                 mejor = (clave, combo)
